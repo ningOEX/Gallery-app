@@ -1,0 +1,1 @@
+<view class="container data-v-06a15efa"><view class="scroll-view-item_H data-v-06a15efa"><view wx:for="{{a}}" wx:for-item="item" wx:key="b" class="item data-v-06a15efa">{{item.a}}</view></view></view>

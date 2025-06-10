@@ -1,0 +1,1 @@
+<view class="search-content" style="{{c}}"><view class="input-view"><uni-icons wx:if="{{a}}" class="input-uni-icon" u-i="61915a52-0" bind:__l="__l" u-p="{{a}}"/><input confirm-type="search" class="nav-bar-input" type="text" placeholder="输入搜索关键词" bindconfirm="{{b}}"/></view><view class="bar-title">推荐</view><view> </view></view>
