@@ -1,8 +1,8 @@
 <template>
 	<view class="container">
 		<view class="title">
-			<text>Card</text>
-			<view>更多>></view>
+			<text>Sort</text>
+			<image :src="dayImgList[currentDay - 1]" mode="aspectFill" class="image"></image>
 		</view>
 		<scroll-view class="scroll-view_H" scroll-x="true" scroll-left="0">
 			<my-item-card></my-item-card>
@@ -11,7 +11,28 @@
 </template>
 
 <script lang="ts" setup>
+	import {ref} from "vue"
+	import { onShow } from "@dcloudio/uni-app"
 	import myItemCard from '@/components/home/my-item-card.vue';
+	
+	const app = getApp()
+	
+	const currentDay = ref(-1)
+	
+	const dayImgList = [
+		'/static/home/icon_monday.png',
+		'/static/home/icon_tuesday.png',
+		'/static/home/icon_ednesday.png',
+		'/static/home/icon_thursday.png',
+		'/static/home/icon_friday.png',
+		'/static/home/icon_saturday.png',
+		'/static/home/icon_sunday.png'
+	]
+	
+	onShow(()=>{
+		currentDay.value = app.globalData.currentDay
+	})
+	
 </script>
 
 <style lang="scss" scoped>
@@ -19,7 +40,8 @@
 		padding: 0 20rpx;
 		box-shadow: 0px 0px 6px #ccc;
 		border-radius: 10rpx;
-		margin:40rpx 10rpx 20rpx 10rpx;
+		margin: 40rpx 10rpx 20rpx 10rpx;
+
 		.title {
 			font-size: 26rpx;
 			display: flex;
@@ -34,9 +56,12 @@
 				font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 				letter-spacing: 4rpx;
 			}
-			
-			view{
-				color: rgba(0,0,0,0.5);
+
+			.image {
+				width: 60rpx;
+				height: 60rpx;
+				margin-top: -10rpx;
+				margin-bottom: 10rpx;
 			}
 		}
 

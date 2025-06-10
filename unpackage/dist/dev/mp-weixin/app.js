@@ -10,12 +10,21 @@ if (!Math) {
 const _sfc_main = {
   onLaunch: function() {
     common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
+    this.globalData.getTodayWeekDay();
   },
   onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:7", "App Show");
+    common_vendor.index.__f__("log", "at App.vue:8", "App Show");
   },
   onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:10", "App Hide");
+    common_vendor.index.__f__("log", "at App.vue:11", "App Hide");
+  },
+  globalData: {
+    currentDay: -1,
+    // 获取当前星期几
+    getTodayWeekDay() {
+      const date = /* @__PURE__ */ new Date();
+      this.currentDay = date.getDay();
+    }
   }
 };
 function createApp() {

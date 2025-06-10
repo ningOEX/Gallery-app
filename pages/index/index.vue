@@ -10,13 +10,17 @@
 </template>
 
 <script setup lang="ts">
+	import {ref} from "vue"
 	import mySearchNavBar from "@/components/home/my-search-nav-bar.vue"
 	import myTopBanner from "@/components/home/my-top-banner.vue";
 	import myNavMenu from "@/components/home/my-nav-menu.vue";
 	import myGoodCard from "@/components/home/my-good-card.vue";
 	import myTabNav from "@/components/home/my-tab-nav.vue";
 	import myTabContentView from "@/components/home/my-tab-content-view.vue";
-
+	
+	const tabList = ref([])
+	
+	// 搜索回调
 	const searchHandle = (value : string) => {
 		console.log(value);
 	}

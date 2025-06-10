@@ -4,31 +4,31 @@
 			<view class="menu-icon-content">
 				<image class="menu-icon" src="@/static/iconNavMenu/icon_menu_1.png" mode=""></image>
 			</view>
-			<text class="menu-text">菜单选项</text>
+			<text class="menu-text">最新周更</text>
 		</view>
 		<view class="menu-item">
 			<view class="menu-icon-content">
 				<image class="menu-icon" src="@/static/iconNavMenu/icon_menu_2.png" mode=""></image>
 			</view>
-			<text class="menu-text">菜单选项</text>
+			<text class="menu-text">精选壁纸</text>
 		</view>
 		<view class="menu-item">
 			<view class="menu-icon-content">
 				<image class="menu-icon" src="@/static/iconNavMenu/icon_menu_3.png" mode=""></image>
 			</view>
-			<text class="menu-text">菜单选项</text>
+			<text class="menu-text">作品最佳</text>
 		</view>
 		<view class="menu-item">
 			<view class="menu-icon-content">
 				<image class="menu-icon" src="@/static/iconNavMenu/icon_menu_4.png" mode=""></image>
 			</view>
-			<text class="menu-text">菜单选项</text>
+			<text class="menu-text">编辑发布</text>
 		</view>
 		<view class="menu-item">
 			<view class="menu-icon-content">
 				<image class="menu-icon" src="@/static/iconNavMenu/icon_menu_5.png" mode=""></image>
 			</view>
-			<text class="menu-text">菜单选项</text>
+			<text class="menu-text">我要发布</text>
 		</view>
 	
 	</view>

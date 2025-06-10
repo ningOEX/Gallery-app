@@ -12,8 +12,9 @@ const myTabContentView = () => "../../components/home/my-tab-content-view.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
+    common_vendor.ref([]);
     const searchHandle = (value) => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:21", value);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:25", value);
     };
     return (_ctx, _cache) => {
       return {

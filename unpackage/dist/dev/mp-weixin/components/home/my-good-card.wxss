@@ -43,8 +43,11 @@
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   letter-spacing: 4rpx;
 }
-.container .title view.data-v-160fa497 {
-  color: rgba(0, 0, 0, 0.5);
+.container .title .image.data-v-160fa497 {
+  width: 60rpx;
+  height: 60rpx;
+  margin-top: -10rpx;
+  margin-bottom: 10rpx;
 }
 .container .scroll-view_H.data-v-160fa497 {
   white-space: nowrap;
