@@ -3,7 +3,7 @@
 		<swiper class="swiper-box" @change="change" :current="swiperDotIndex">
 			<swiper-item v-for="(item ,index) in info" :key="index">
 				<view class="swiper-item">
-					<image :src="item.content" class="image"></image>
+					<image :src="item.content" class="image" mode="scaleToFill"></image>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -13,11 +13,11 @@
 <script setup lang="ts">
 	import { ref } from "vue"
 	const info = [{
-		content: 'https://picsum.photos/500?id=0'
+		content: '/static/banner/banner_1.jpg'
 	}, {
-		content: 'https://picsum.photos/500?id=1'
+		content: '/static/banner/banner_2.jpg'
 	}, {
-		content: 'https://picsum.photos/500?id=2'
+		content: '/static/banner/banner_3.jpg'
 	}]
 
 	const current = ref(0) // 滑动控制指示器
@@ -42,6 +42,8 @@
 	.swiper-box {
 		margin: 10rpx;
 		margin-top: 0;
+		height: 400rpx;
+		border-radius: 10rpx;
 	}
 	.image {
 		width: 100%;

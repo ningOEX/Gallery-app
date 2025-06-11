@@ -2,6 +2,8 @@
 .swiper-box.data-v-5989f462 {
 		margin: 10rpx;
 		margin-top: 0;
+		height: 400rpx;
+		border-radius: 10rpx;
 }
 .image.data-v-5989f462 {
 		width: 100%;

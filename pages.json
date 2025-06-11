@@ -28,6 +28,12 @@
 				"navigationBarTitleText": "我的",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/upload/index",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
 		}
 	],
 	"globalStyle": {

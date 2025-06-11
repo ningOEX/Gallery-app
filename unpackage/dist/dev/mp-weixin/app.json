@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/login/index",
     "pages/register/index",
-    "pages/user/index"
+    "pages/user/index",
+    "pages/upload/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",

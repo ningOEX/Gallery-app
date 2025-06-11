@@ -24,7 +24,7 @@
 			</view>
 			<text class="menu-text">编辑发布</text>
 		</view>
-		<view class="menu-item">
+		<view class="menu-item" @click="goToUpload">
 			<view class="menu-icon-content">
 				<image class="menu-icon" src="@/static/iconNavMenu/icon_menu_5.png" mode=""></image>
 			</view>
@@ -37,6 +37,14 @@
 <script lang="ts" setup>
 	import {ref} from "vue" 
 	
+	/**
+	 * 我要发布
+	 */
+	const goToUpload = ()=>{
+		uni.navigateTo({
+			url:"/pages/upload/index"
+		})
+	}
 </script>
 
 <style lang="scss" scoped>

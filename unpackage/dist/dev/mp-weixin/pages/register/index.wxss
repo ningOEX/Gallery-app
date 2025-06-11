@@ -52,11 +52,14 @@
 .container .login-box .input-item.data-v-46a64346 {
   display: flex;
   align-items: center;
-  gap: 20rpx;
-  border: 1px solid;
+  border: 1px solid #abceff;
   margin-top: 20rpx;
-  padding: 10rpx 20rpx;
+  padding: 0 30rpx 0 18rpx;
   border-radius: 50rpx;
+}
+.container .login-box .input-item .icon.data-v-46a64346 {
+  width: 50rpx;
+  height: 50rpx;
 }
 .container .login-box .forgot-password.data-v-46a64346 {
   color: rgba(0, 0, 0, 0.4);

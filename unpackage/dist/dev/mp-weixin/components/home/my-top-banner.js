@@ -13,11 +13,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "my-top-banner",
   setup(__props) {
     const info = [{
-      content: "https://picsum.photos/500?id=0"
+      content: "/static/banner/banner_1.jpg"
     }, {
-      content: "https://picsum.photos/500?id=1"
+      content: "/static/banner/banner_2.jpg"
     }, {
-      content: "https://picsum.photos/500?id=2"
+      content: "/static/banner/banner_3.jpg"
     }];
     const current = common_vendor.ref(0);
     const swiperDotIndex = common_vendor.ref(0);
