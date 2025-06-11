@@ -6,9 +6,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   setup(__props) {
     return (_ctx, _cache) => {
       return {
-        a: common_assets._imports_0,
-        b: common_assets._imports_1,
-        c: common_assets._imports_2,
+        a: common_assets._imports_0$2,
+        b: common_assets._imports_1$2,
+        c: common_assets._imports_2$1,
         d: common_assets._imports_3,
         e: common_assets._imports_4
       };

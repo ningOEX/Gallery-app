@@ -4,12 +4,14 @@
 			<text class="title">登录</text>
 
 			<view class="input-item">
-				<uni-icons type="contact" size="30"></uni-icons>
-				<input v-model="username" placeholder="请输入手机号码" type="text" />
+				<image src="/static/login/icon_phone.png" mode="aspectFill" class="icon"></image>
+				<uni-easyinput type="number" placeholder-style="font-size:30rpx;" maxlength="11" v-model="username"
+					:input-border="false" placeholder="请输入手机号"></uni-easyinput>
 			</view>
 			<view class="input-item">
-				<uni-icons type="contact" size="30"></uni-icons>
-				<input v-model="password" class="input" placeholder="请输入密码" type="password" />
+				<image src="/static/login/icon_passwrod.png" mode="aspectFill" class="icon"></image>
+				<uni-easyinput type="password" placeholder-style="font-size:30rpx;" maxlength="18" v-model="password"
+					:input-border="false" placeholder="请输入密码"></uni-easyinput>
 			</view>
 
 			<text class="forgot-password">忘记密码？</text>
@@ -22,22 +24,51 @@
 </template>
 
 <script setup lang="ts">
-	import {ref} from "vue"
-	
+	import { ref } from "vue"
+
 	const username = ref('')
 	const password = ref('')
-	
+
 	// 登录
-	const handleLogin = ()=>{
-		
+	const handleLogin = async () => {
+		uni.showLoading({
+			title: '登录中...'
+		})
+		const res = await uniCloud.callFunction({
+			name: 'api_login',
+			data: {
+				username: username.value,
+				password: password.value
+			}
+		});
+
+		if (res.result.code === 200) {
+			console.log('登录成功:', res.result.user);
+			uni.showToast({
+				title:res.result.message,
+				icon:"none"
+			})
+			// 处理成功逻辑
+			uni.setStorageSync('user',res.result.user);
+			uni.switchTab({
+				url:'/pages/index/index'
+			})
+			
+		} else {
+			// console.error('登录失败:', res.result.message);
+			uni.showToast({
+				title:res.result.message,
+				icon:"none"
+			})
+		}
+		uni.hideLoading()
 	}
-	
-	const goToRegister = ()=> {
+
+	const goToRegister = () => {
 		uni.redirectTo({
 			url: '/pages/register/index' // 注册页面路径
 		});
 	}
-	
 </script>
 
 <style lang="scss" scoped>
@@ -49,6 +80,7 @@
 		background: linear-gradient(45deg, #eff4fb, #eff4fb, #abceff);
 		box-sizing: border-box;
 		z-index: 999;
+
 		.login-box {
 			position: relative;
 			z-index: 999;
@@ -59,24 +91,28 @@
 			max-width: 400px;
 			box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
 			margin: 0 20rpx;
-			
+
 			.title {
 				font-size: 24px;
 				margin-bottom: 20px;
 				text-align: center;
 				color: #ff6b81;
 			}
-			
-			.input-item{
+
+			.input-item {
 				display: flex;
 				align-items: center;
-				gap: 20rpx;
-				border: 1px solid;
+				border: 1px solid #abceff;
 				margin-top: 20rpx;
-				padding: 10rpx 20rpx;
+				padding: 0 30rpx 0 18rpx;
 				border-radius: 50rpx;
+
+				.icon {
+					width: 50rpx;
+					height: 50rpx;
+				}
 			}
-			
+
 			.forgot-password {
 				color: rgba(0, 0, 0, 0.4);
 				text-align: right;
@@ -84,7 +120,7 @@
 				padding: 10rpx 0;
 				width: 100%;
 			}
-			
+
 			.login-button {
 				background-color: #ff6b81;
 				color: white;
@@ -92,7 +128,7 @@
 				border-radius: 50px;
 				width: 100%;
 			}
-			
+
 			.register-link {
 				position: absolute;
 				width: 80%;
@@ -106,15 +142,15 @@
 				border-bottom-left-radius: 20rpx;
 				border-bottom-right-radius: 20rpx;
 				box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
-				
-				text{
-					color:rgba(0, 0, 0, 0.4);
+
+				text {
+					color: rgba(0, 0, 0, 0.4);
 				}
-				.register{
+
+				.register {
 					color: #ed61ff;
 				}
 			}
 		}
 	}
-
 </style>

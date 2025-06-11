@@ -11,12 +11,13 @@ const _sfc_main = {
   onLaunch: function() {
     common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
     this.globalData.getTodayWeekDay();
+    this.globalData.getUser();
   },
   onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:8", "App Show");
+    common_vendor.index.__f__("log", "at App.vue:9", "App Show");
   },
   onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:11", "App Hide");
+    common_vendor.index.__f__("log", "at App.vue:12", "App Hide");
   },
   globalData: {
     currentDay: -1,
@@ -24,6 +25,28 @@ const _sfc_main = {
     getTodayWeekDay() {
       const date = /* @__PURE__ */ new Date();
       this.currentDay = date.getDay();
+    },
+    getUser() {
+      const user = common_vendor.index.getStorageSync("user");
+      if (!user) {
+        common_vendor.index.reLaunch({
+          url: "/pages/login/index"
+        });
+        return;
+      }
+      this.user = user;
+    },
+    update() {
+      const updateManager = common_vendor.wx$1.getUpdateManager();
+      common_vendor.index.__f__("log", "at App.vue:38", "[updateManager]: ", updateManager);
+      updateManager.onCheckForUpdate(function(res) {
+        common_vendor.index.__f__("log", "at App.vue:41", "是否有新版本：", res.hasUpdate);
+      });
+      updateManager.onUpdateReady(function() {
+        updateManager.applyUpdate();
+      });
+      updateManager.onUpdateFailed(function() {
+      });
     }
   }
 };

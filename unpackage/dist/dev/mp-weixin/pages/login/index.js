@@ -1,19 +1,47 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const common_assets = require("../../common/assets.js");
 if (!Array) {
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
-  _easycom_uni_icons2();
+  const _easycom_uni_easyinput2 = common_vendor.resolveComponent("uni-easyinput");
+  _easycom_uni_easyinput2();
 }
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
+const _easycom_uni_easyinput = () => "../../uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.js";
 if (!Math) {
-  _easycom_uni_icons();
+  _easycom_uni_easyinput();
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
     const username = common_vendor.ref("");
     const password = common_vendor.ref("");
-    const handleLogin = () => {
+    const handleLogin = async () => {
+      common_vendor.index.showLoading({
+        title: "登录中..."
+      });
+      const res = await common_vendor.er.callFunction({
+        name: "api_login",
+        data: {
+          username: username.value,
+          password: password.value
+        }
+      });
+      if (res.result.code === 200) {
+        common_vendor.index.__f__("log", "at pages/login/index.vue:46", "登录成功:", res.result.user);
+        common_vendor.index.showToast({
+          title: res.result.message,
+          icon: "none"
+        });
+        common_vendor.index.setStorageSync("user", res.result.user);
+        common_vendor.index.switchTab({
+          url: "/pages/index/index"
+        });
+      } else {
+        common_vendor.index.showToast({
+          title: res.result.message,
+          icon: "none"
+        });
+      }
+      common_vendor.index.hideLoading();
     };
     const goToRegister = () => {
       common_vendor.index.redirectTo({
@@ -23,18 +51,26 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.p({
-          type: "contact",
-          size: "30"
+        a: common_assets._imports_0,
+        b: common_vendor.o(($event) => username.value = $event),
+        c: common_vendor.p({
+          type: "number",
+          ["placeholder-style"]: "font-size:30rpx;",
+          maxlength: "11",
+          ["input-border"]: false,
+          placeholder: "请输入手机号",
+          modelValue: username.value
         }),
-        b: username.value,
-        c: common_vendor.o(($event) => username.value = $event.detail.value),
-        d: common_vendor.p({
-          type: "contact",
-          size: "30"
+        d: common_assets._imports_1,
+        e: common_vendor.o(($event) => password.value = $event),
+        f: common_vendor.p({
+          type: "password",
+          ["placeholder-style"]: "font-size:30rpx;",
+          maxlength: "18",
+          ["input-border"]: false,
+          placeholder: "请输入密码",
+          modelValue: password.value
         }),
-        e: password.value,
-        f: common_vendor.o(($event) => password.value = $event.detail.value),
         g: common_vendor.o(handleLogin),
         h: common_vendor.o(goToRegister)
       };

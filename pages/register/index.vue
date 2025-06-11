@@ -2,22 +2,20 @@
 	<view class="container">
 		<view class="login-box">
 			<text class="title">账号注册！</text>
-
 			<view class="input-item">
-				<uni-icons type="contact" size="30"></uni-icons>
-				<input v-model="username" placeholder="请输入手机号码" type="text" />
+				<image src="/static/login/icon_phone.png" mode="aspectFill" class="icon"></image>
+				<uni-easyinput type="number" @blur="blurUsername" placeholder-style="font-size:30rpx;" maxlength="11" v-model="username" :input-border="false" placeholder="请输入手机号"></uni-easyinput>
 			</view>
 			<view class="input-item">
-				<uni-icons type="contact" size="30"></uni-icons>
-				<input v-model="password" class="input" placeholder="请输入密码" type="password" />
+				<image src="/static/login/icon_passwrod.png" mode="aspectFill" class="icon"></image>
+				<uni-easyinput type="password" @blur="blurPassword" placeholder-style="font-size:30rpx;" maxlength="18" v-model="password" :input-border="false" placeholder="请输入密码"></uni-easyinput>
 			</view>
 			<view class="input-item">
-				<uni-icons type="contact" size="30"></uni-icons>
-				<input v-model="password" class="input" placeholder="请再次输入密码" type="password" />
+				<image src="/static/login/icon_pwd.png" mode="aspectFill" class="icon"></image>
+				<uni-easyinput type="password" placeholder-style="font-size:30rpx;" maxlength="18" v-model="once_passwrod" :input-border="false" placeholder="再次输入密码"></uni-easyinput>
 			</view>
-
 			<!-- <text class="forgot-password">忘记密码？</text> -->
-			<button class="login-button" @click="handleLogin">立即注册</button>
+			<button class="login-button" @click="registerUser">立即注册</button>
 			<view class="register-link">
 				<text>已有账号！<text @click="goToLogin" class="register">前往登录</text></text>
 			</view>
@@ -26,22 +24,101 @@
 </template>
 
 <script setup lang="ts">
-	import {ref} from "vue"
-	
+	import { ref } from "vue"
+	import {validatePhoneNumber,validatePassword} from "@/utils/index"
+
 	const username = ref('')
 	const password = ref('')
+	const once_passwrod = ref('')
 	
-	// 登录
-	const handleLogin = ()=>{
-		
+	/**
+	 * 手机输入框失去焦点校验
+	 */
+	const blurUsername = ()=>{
+		if(!validatePhoneNumber(username.value)){
+			uni.showToast({
+				title: '请输入正确手机号',
+				icon: 'none'
+			});
+			return false
+		}
+		return true
 	}
 	
-	const goToLogin = ()=> {
+	/**
+	 * 密码失去焦点验证
+	 */
+	const blurPassword = ()=>{
+		if(!validatePassword(password.value)){
+			uni.showToast({
+				title: '输入密码长度过短！',
+				icon: 'none'
+			});
+			return false
+		}
+		return true
+	}
+	
+	
+	// 注册
+	const registerUser = async () => {
+		if (!username.value || !password.value) {
+			uni.showToast({
+				title: '请输入用户名和密码',
+				icon: 'none'
+			});
+			return
+		}
+
+		if (password.value !== once_passwrod.value) {
+			uni.showToast({
+				title: '密码不一致，重新输入！',
+				icon: 'none'
+			});
+			return
+		}
+		
+		if(validatePhoneNumber(username.value) && validatePassword(password.value)){
+			uni.showLoading({
+				title:'注册中...'
+			})
+			const res = await uniCloud.callFunction({
+				name: 'api_register',
+				data: {
+					username: username.value,
+					password: password.value
+				}
+			});
+			console.log(res);
+			if(res.result.code === 200){
+				uni.hideLoading()
+				uni.showToast({
+					title: '成功注册，正在为您登录...',
+					icon: 'none',
+				});
+				const user = {
+					username:username.value,
+					id:res.result.userId,
+				}
+				uni.setStorageSync('user', user);
+				uni.switchTab({
+					url:"/pages/index/index"
+				})
+			}else{
+				uni.showToast({
+					title: res.result.message,
+					icon: 'none',
+				});
+			}
+		}
+	}
+
+	// 前往登录
+	const goToLogin = () => {
 		uni.redirectTo({
-			url: '/pages/login/index' 
+			url: '/pages/login/index'
 		});
 	}
-	
 </script>
 
 <style lang="scss" scoped>
@@ -53,6 +130,7 @@
 		background: linear-gradient(45deg, #eff4fb, #eff4fb, #abceff);
 		box-sizing: border-box;
 		z-index: 999;
+
 		.login-box {
 			position: relative;
 			z-index: 999;
@@ -63,24 +141,27 @@
 			max-width: 400px;
 			box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
 			margin: 0 20rpx;
-			
+
 			.title {
 				font-size: 24px;
 				margin-bottom: 20px;
 				text-align: center;
 				color: #ff6b81;
 			}
-			
-			.input-item{
+
+			.input-item {
 				display: flex;
 				align-items: center;
-				gap: 20rpx;
-				border: 1px solid;
+				border: 1px solid #abceff;
 				margin-top: 20rpx;
-				padding: 10rpx 20rpx;
+				padding: 0 30rpx 0 18rpx;
 				border-radius: 50rpx;
+				.icon {
+					width: 50rpx;
+					height: 50rpx;
+				}
 			}
-			
+
 			.forgot-password {
 				color: rgba(0, 0, 0, 0.4);
 				text-align: right;
@@ -88,7 +169,7 @@
 				padding: 10rpx 0;
 				width: 100%;
 			}
-			
+
 			.login-button {
 				background-color: #ff6b81;
 				color: white;
@@ -97,7 +178,7 @@
 				width: 100%;
 				margin-top: 20rpx;
 			}
-			
+
 			.register-link {
 				position: absolute;
 				width: 80%;
@@ -111,15 +192,15 @@
 				border-bottom-left-radius: 20rpx;
 				border-bottom-right-radius: 20rpx;
 				box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
-				
-				text{
-					color:rgba(0, 0, 0, 0.4);
+
+				text {
+					color: rgba(0, 0, 0, 0.4);
 				}
-				.register{
+
+				.register {
 					color: #ed61ff;
 				}
 			}
 		}
 	}
-
 </style>
