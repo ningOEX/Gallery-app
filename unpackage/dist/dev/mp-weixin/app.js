@@ -7,6 +7,7 @@ if (!Math) {
   "./pages/register/index.js";
   "./pages/user/index.js";
   "./pages/upload/index.js";
+  "./pages/hotWeekUpdate/index.js";
 }
 const _sfc_main = {
   onLaunch: function() {

@@ -1,0 +1,9 @@
+
+.waterfall.data-v-5860da28 {
+  display: flex;
+  justify-content: space-between;
+  padding: 24rpx;
+}
+.column.data-v-5860da28 {
+  width: 48%;
+}

@@ -1,0 +1,1 @@
+<scroll-view class="data-v-5860da28" scroll-y><view class="waterfall data-v-5860da28"><view wx:for="{{a}}" wx:for-item="col" wx:key="b" class="column data-v-5860da28"><image-card wx:for="{{col.a}}" wx:for-item="item" wx:key="a" class="data-v-5860da28" u-i="{{item.b}}" bind:__l="__l" u-p="{{item.c}}"/></view></view></scroll-view>
