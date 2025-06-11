@@ -24,9 +24,9 @@
 			<view class="uploader">
 				<view class="upload-item" v-for="(item, index) in imagesForm.images" :key="index">
 					<image class="image" :src="item" mode="aspectFill"></image>
-					<view class="delete-btn" @click="removeImage(index)">×</view>
+					<view class="delete-btn" >×</view>
 				</view>
-				<view class="upload-btn" @click="chooseImage" v-if="imagesForm.images.length < 9">
+				<view class="upload-btn"  v-if="imagesForm.images.length < 9">
 					<uni-icons type="plusempty" size="30" color="#999"></uni-icons>
 					<text class="upload-text">添加图片</text>
 				</view>
@@ -34,8 +34,7 @@
 			<text class="upload-tip">最多可上传9张图片</text>
 		</view>
 
-		<button class="submit-btn" :class="{disabled: !canSubmit}" @click="handleSubmit"
-			:disabled="!canSubmit">发布</button>
+		<button class="submit-btn" >发布</button>
 	</view>
 </template>
 
@@ -49,6 +48,12 @@
 		date: '',
 		images: ''
 	})
+	
+	const onDateChange = ()=>{
+		
+	}
+	
+	
 
 </script>
 

@@ -31,6 +31,13 @@
 
 	// 登录
 	const handleLogin = async () => {
+		if(!username.value || !password.value) {
+			uni.showToast({
+				title:'请输入账号密码',
+				icon:"none"
+			})
+			return
+		}
 		uni.showLoading({
 			title: '登录中...'
 		})

@@ -15,6 +15,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const username = common_vendor.ref("");
     const password = common_vendor.ref("");
     const handleLogin = async () => {
+      if (!username.value || !password.value) {
+        common_vendor.index.showToast({
+          title: "请输入账号密码",
+          icon: "none"
+        });
+        return;
+      }
       common_vendor.index.showLoading({
         title: "登录中..."
       });
@@ -26,7 +33,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         }
       });
       if (res.result.code === 200) {
-        common_vendor.index.__f__("log", "at pages/login/index.vue:46", "登录成功:", res.result.user);
+        common_vendor.index.__f__("log", "at pages/login/index.vue:53", "登录成功:", res.result.user);
         common_vendor.index.showToast({
           title: res.result.message,
           icon: "none"

@@ -17,6 +17,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       date: "",
       images: ""
     });
+    const onDateChange = () => {
+    };
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: imagesForm.value.title,
@@ -27,15 +29,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         f: common_vendor.t(imagesForm.value.description.length),
         g: common_vendor.t(imagesForm.value.date || "请选择日期"),
         h: imagesForm.value.date,
-        i: common_vendor.o(
-          //@ts-ignore
-          (...args) => _ctx.onDateChange && _ctx.onDateChange(...args)
-        ),
+        i: common_vendor.o(onDateChange),
         j: common_vendor.f(imagesForm.value.images, (item, index, i0) => {
           return {
             a: item,
-            b: common_vendor.o(($event) => _ctx.removeImage(index), index),
-            c: index
+            b: index
           };
         }),
         k: imagesForm.value.images.length < 9
@@ -44,19 +42,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           type: "plusempty",
           size: "30",
           color: "#999"
-        }),
-        m: common_vendor.o(
-          //@ts-ignore
-          (...args) => _ctx.chooseImage && _ctx.chooseImage(...args)
-        )
-      } : {}, {
-        n: !_ctx.canSubmit ? 1 : "",
-        o: common_vendor.o(
-          //@ts-ignore
-          (...args) => _ctx.handleSubmit && _ctx.handleSubmit(...args)
-        ),
-        p: !_ctx.canSubmit
-      });
+        })
+      } : {});
     };
   }
 });
