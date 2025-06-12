@@ -2,12 +2,8 @@
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
 if (!Array) {
-  const _easycom_uni_easyinput2 = common_vendor.resolveComponent("uni-easyinput");
-  _easycom_uni_easyinput2();
-}
-const _easycom_uni_easyinput = () => "../../uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.js";
-if (!Math) {
-  _easycom_uni_easyinput();
+  const _component_uni_easyinput = common_vendor.resolveComponent("uni-easyinput");
+  _component_uni_easyinput();
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
@@ -25,7 +21,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       common_vendor.index.showLoading({
         title: "登录中..."
       });
-      const res = await common_vendor.er.callFunction({
+      const res = await common_vendor.nr.callFunction({
         name: "api_login",
         data: {
           username: username.value,

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"version":3,"file":"image-card.js","sources":["C:/Program Files/HBuilderX/plugins/uniapp-cli-vite/uniComponent:/RDovcGVyc29uYWwgc3BhY2UvR2FsbGVyeS1hcHAvY29tcG9uZW50cy9ob21lL2ltYWdlLWNhcmQudnVl"],"sourcesContent":["import Component from 'D:/personal space/Gallery-app/components/home/image-card.vue'\nwx.createComponent(Component)"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AACA,GAAG,gBAAgB,SAAS;"}
+=======
+{"version":3,"file":"image-card.js","sources":["../../HBuilderX/plugins/uniapp-cli-vite/uniComponent:/RjovTmluZ0NoYW9XZWlQcm9qZGVjdC9HYWxsZXJ5LWFwcC9jb21wb25lbnRzL2hvbWUvaW1hZ2UtY2FyZC52dWU"],"sourcesContent":["import Component from 'F:/NingChaoWeiProjdect/Gallery-app/components/home/image-card.vue'\nwx.createComponent(Component)"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AACA,GAAG,gBAAgB,SAAS;"}
+>>>>>>> 01b4a8535def6b71d74c01496340a79debf31943
