@@ -7886,6 +7886,12 @@ const pages = [
     style: {
       navigationBarTitleText: "发布"
     }
+  },
+  {
+    path: "pages/hotWeekUpdate/index",
+    style: {
+      navigationBarTitleText: "热门周更"
+    }
   }
 ];
 const globalStyle = {
@@ -10772,6 +10778,7 @@ exports.n = n$1;
 exports.o = o$1;
 exports.onShow = onShow;
 exports.p = p$1;
+exports.reactive = reactive;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s$1;

@@ -1,22 +1,54 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const common_assets = require("../../common/assets.js");
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "my-nav-menu",
   setup(__props) {
-    const goToUpload = () => {
-      common_vendor.index.navigateTo({
-        url: "/pages/upload/index"
-      });
+    const menuList = common_vendor.reactive([
+      { menuTitle: "最新周更", menuIcon: "../../static/iconNavMenu/icon_menu_1.png" },
+      { menuTitle: "精选壁纸", menuIcon: "../../static/iconNavMenu/icon_menu_2.png" },
+      { menuTitle: "作品最佳", menuIcon: "../../static/iconNavMenu/icon_menu_3.png" },
+      { menuTitle: "编辑发布", menuIcon: "../../static/iconNavMenu/icon_menu_4.png" },
+      { menuTitle: "我要发布", menuIcon: "../../static/iconNavMenu/icon_menu_5.png" }
+    ]);
+    const clickMenuItem = (item) => {
+      common_vendor.index.__f__("log", "at components/home/my-nav-menu.vue:35", "点击了菜单栏：", item);
+      switch (item.menuTitle) {
+        case "最新周更":
+          common_vendor.index.navigateTo({ url: "/pages/hotWeekUpdate/index" });
+          break;
+        case "精选壁纸":
+          common_vendor.index.showToast({
+            title: "敬请期待",
+            icon: "none"
+          });
+          break;
+        case "作品最佳":
+          common_vendor.index.showToast({
+            title: "敬请期待",
+            icon: "none"
+          });
+          break;
+        case "编辑发布":
+          common_vendor.index.showToast({
+            title: "敬请期待",
+            icon: "none"
+          });
+          break;
+        case "我要发布":
+          common_vendor.index.navigateTo({ url: "/pages/upload/index" });
+          break;
+      }
     };
     return (_ctx, _cache) => {
       return {
-        a: common_assets._imports_0$2,
-        b: common_assets._imports_1$2,
-        c: common_assets._imports_2$1,
-        d: common_assets._imports_3,
-        e: common_assets._imports_4,
-        f: common_vendor.o(goToUpload)
+        a: common_vendor.f(menuList, (item, index, i0) => {
+          return {
+            a: item.menuIcon,
+            b: common_vendor.t(item.menuTitle),
+            c: index,
+            d: common_vendor.o(($event) => clickMenuItem(item), index)
+          };
+        })
       };
     };
   }

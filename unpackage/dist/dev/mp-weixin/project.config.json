@@ -7,7 +7,7 @@
   "setting": {
     "urlCheck": false,
     "es6": true,
-    "postcss": false,
+    "postcss": true,
     "minified": false,
     "newFeature": true,
     "bigPackageSizeSupport": true,
@@ -18,7 +18,7 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.8.7",
+  "libVersion": "3.8.8",
   "appid": "wx3477ed980fed9a56",
   "projectname": "weixin-gallery",
   "condition": {

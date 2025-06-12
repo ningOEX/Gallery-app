@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "@dcloudio/types": "^3.4.15",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "@vue/eslint-config-typescript": "^14.5.0",
+    "@vue/runtime-core": "^3.5.16",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "prettier": "^3.5.3",
+    "vue": "^3.5.16"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
+    "format": "prettier --write \"**/*.{js,ts,vue,css,scss,less,html,json}\""
+  }
+}
