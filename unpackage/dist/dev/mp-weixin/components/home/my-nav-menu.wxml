@@ -1,1 +1,0 @@
-<view class="nav-menu-cotnainer data-v-0d80d83b"><view wx:for="{{a}}" wx:for-item="item" wx:key="c" class="menu-item data-v-0d80d83b" bindtap="{{item.d}}"><view class="menu-icon-content data-v-0d80d83b"><image class="menu-icon data-v-0d80d83b" src="{{item.a}}" mode=""></image></view><text class="menu-text data-v-0d80d83b">{{item.b}}</text></view></view>

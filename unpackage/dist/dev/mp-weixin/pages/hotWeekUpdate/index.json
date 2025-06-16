@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "热门周更",
-  "usingComponents": {
-    "image-card": "../../components/home/image-card"
-  }
-}

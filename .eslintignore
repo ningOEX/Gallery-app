@@ -1,4 +1,4 @@
 node_modules
-dist
+/unpackage/
 public
 *.d.ts 
