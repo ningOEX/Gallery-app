@@ -22,7 +22,7 @@
 		</view>
 
 		<view class="nav-content">
-			<view class="nav-item">
+			<view class="nav-item"  @click="ToEdit">
 				<view class="nav-icon">
 					<image src="/static/iconTabBar/icon_my.png" mode="aspectFit" class="icon"></image>
 					<text>账号管理</text>
@@ -84,6 +84,13 @@
 		app.globalData.getUser();
 		user.value = app.globalData.user;
 	})
+	
+	const ToEdit = ()=>{
+		uni.navigateTo({
+			url:"/pages/editUserInfo/index"
+		})
+	}
+	
 	
 	/**
 	 * 退出登录

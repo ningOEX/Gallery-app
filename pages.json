@@ -47,6 +47,12 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "图片详情"
 			}
+		},
+		{
+			"path": "pages/editUserInfo/index",
+			"style": {
+				"navigationBarTitleText": "账户管理"
+			}
 		}
 	],
 	"globalStyle": {
