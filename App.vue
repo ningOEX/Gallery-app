@@ -23,7 +23,6 @@
 
 			getUser() {
 				const user = uni.getStorageSync('user');
-
 				if (!user) {
 					uni.reLaunch({
 						url: '/pages/login/index'

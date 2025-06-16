@@ -38,10 +38,23 @@
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "statusbar": {
+  "immersed": "supported",
+  "style": "light",  // 文字颜色
+  "background": "#00000000" // 全透明
+}
+
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "statusbar": {
+  "immersed": "supported",
+  "style": "light",  // 文字颜色
+  "background": "#00000000" // 全透明
+}
+
+            },
             /* SDK配置 */
             "sdkConfigs" : {}
         }

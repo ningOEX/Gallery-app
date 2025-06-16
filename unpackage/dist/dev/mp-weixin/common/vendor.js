@@ -7046,11 +7046,7 @@ function isConsoleWritable() {
 function initRuntimeSocketService() {
   const hosts = "192.168.5.12,127.0.0.1";
   const port = "8090";
-<<<<<<< HEAD
-  const id = "mp-weixin_0Wr_Qj";
-=======
-  const id = "mp-weixin_WxGmbI";
->>>>>>> 01b4a8535def6b71d74c01496340a79debf31943
+  const id = "mp-weixin_yXWBPF";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -8036,6 +8032,13 @@ const pages = [
     style: {
       navigationBarTitleText: "热门周更"
     }
+  },
+  {
+    path: "pages/imageDetails/index",
+    style: {
+      navigationStyle: "custom",
+      navigationBarTitleText: "图片详情"
+    }
   }
 ];
 const globalStyle = {
@@ -8356,13 +8359,8 @@ class v {
 function I(e2) {
   return e2 && "string" == typeof e2 ? JSON.parse(e2) : e2;
 }
-<<<<<<< HEAD
-const b = true, E = "mp-weixin", P = T(define_process_env_UNI_SECURE_NETWORK_CONFIG_default), C = E, A = T('{"address":["127.0.0.1","26.26.26.1","192.168.10.138"],"servePort":7000,"debugPort":9000,"initialLaunchType":"local","skipFiles":["<node_internals>/**","C:/Program Files/HBuilderX/plugins/unicloud/**/*.js"]}'), O = T('[{"provider":"aliyun","spaceName":"gallery-app-dev","spaceId":"mp-051db2f0-3127-4e50-bacf-ac94f022bbd7","clientSecret":"AHql17BGC9BZW2jmP3nfzA==","endpoint":"https://api.next.bspapp.com"}]') || [];
-let N = "";
-=======
 const S = true, b = "mp-weixin", T = I(define_process_env_UNI_SECURE_NETWORK_CONFIG_default), A = b, P = I(""), C = I("[]") || [];
 let O = "";
->>>>>>> 01b4a8535def6b71d74c01496340a79debf31943
 try {
   O = "__UNI__F0B7DFC";
 } catch (e2) {

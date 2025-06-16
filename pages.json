@@ -40,6 +40,13 @@
 			"style": {
 				"navigationBarTitleText": "热门周更"
 			}
+		},
+		{
+			"path": "pages/imageDetails/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "图片详情"
+			}
 		}
 	],
 	"globalStyle": {
