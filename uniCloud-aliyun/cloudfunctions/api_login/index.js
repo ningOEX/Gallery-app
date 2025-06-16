@@ -5,11 +5,11 @@ const { log } = require("console");
 const db = uniCloud.database();
 
 exports.main = async (event, context) => {
-    const { username, password } = event;
+    const { phone, password } = event;
 
     // 查询用户
     const res = await db.collection('users').where({
-        username: username
+        phone
     }).get();
 
     // 检查用户是否存在
@@ -30,14 +30,12 @@ exports.main = async (event, context) => {
         };
     }
 	
+	delete user.password;
+	
     // 登录成功，返回用户信息
     return {
         code: 200,
         message: '登录成功',
-        user: {
-            username: user.username,
-			id:user._id
-            // 其他用户信息
-        }
+        userInfo: {...user}
     };
 };

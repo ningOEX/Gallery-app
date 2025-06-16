@@ -5,7 +5,7 @@
 
 			<view class="input-item">
 				<image src="/static/login/icon_phone.png" mode="aspectFill" class="icon"></image>
-				<uni-easyinput type="number" placeholder-style="font-size:30rpx;" maxlength="11" v-model="username"
+				<uni-easyinput type="number" placeholder-style="font-size:30rpx;" maxlength="11" v-model="phone"
 					:input-border="false" placeholder="请输入手机号"></uni-easyinput>
 			</view>
 			<view class="input-item">
@@ -26,12 +26,12 @@
 <script setup lang="ts">
 	import { ref } from "vue"
 
-	const username = ref('')
+	const phone = ref('')
 	const password = ref('')
 
 	// 登录
 	const handleLogin = async () => {
-		if(!username.value || !password.value) {
+		if(!phone.value || !password.value) {
 			uni.showToast({
 				title:'请输入账号密码',
 				icon:"none"
@@ -44,19 +44,19 @@
 		const res = await uniCloud.callFunction({
 			name: 'api_login',
 			data: {
-				username: username.value,
+				phone: phone.value,
 				password: password.value
 			}
 		});
 
 		if (res.result.code === 200) {
-			console.log('登录成功:', res.result.user);
+			console.log('登录成功:', res.result.userInfo);
 			uni.showToast({
 				title:res.result.message,
 				icon:"none"
 			})
 			// 处理成功逻辑
-			uni.setStorageSync('user',res.result.user);
+			uni.setStorageSync('userInfo',res.result.userInfo);
 			uni.switchTab({
 				url:'/pages/index/index'
 			})

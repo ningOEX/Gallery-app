@@ -4,7 +4,7 @@
 			<text class="title">账号注册！</text>
 			<view class="input-item">
 				<image src="/static/login/icon_phone.png" mode="aspectFill" class="icon"></image>
-				<uni-easyinput type="number" @blur="blurUsername" placeholder-style="font-size:30rpx;" maxlength="11" v-model="username" :input-border="false" placeholder="请输入手机号"></uni-easyinput>
+				<uni-easyinput type="number" @blur="blurUsername" placeholder-style="font-size:30rpx;" maxlength="11" v-model="phone" :input-border="false" placeholder="请输入手机号"></uni-easyinput>
 			</view>
 			<view class="input-item">
 				<image src="/static/login/icon_passwrod.png" mode="aspectFill" class="icon"></image>
@@ -27,7 +27,7 @@
 	import { ref } from "vue"
 	import {validatePhoneNumber,validatePassword} from "@/utils/index"
 
-	const username = ref('')
+	const phone = ref('')
 	const password = ref('')
 	const once_passwrod = ref('')
 	
@@ -35,7 +35,7 @@
 	 * 手机输入框失去焦点校验
 	 */
 	const blurUsername = ()=>{
-		if(!validatePhoneNumber(username.value)){
+		if(!validatePhoneNumber(phone.value)){
 			uni.showToast({
 				title: '请输入正确手机号',
 				icon: 'none'
@@ -62,7 +62,7 @@
 	
 	// 注册
 	const registerUser = async () => {
-		if (!username.value || !password.value) {
+		if (!phone.value || !password.value) {
 			uni.showToast({
 				title: '请输入用户名和密码',
 				icon: 'none'
@@ -78,32 +78,25 @@
 			return
 		}
 		
-		if(validatePhoneNumber(username.value) && validatePassword(password.value)){
+		if(validatePhoneNumber(phone.value) && validatePassword(password.value)){
 			uni.showLoading({
 				title:'注册中...'
 			})
 			const res = await uniCloud.callFunction({
 				name: 'api_register',
 				data: {
-					username: username.value,
+					phone: phone.value,
 					password: password.value
 				}
 			});
-			console.log(res);
+			console.log("res",res);
 			if(res.result.code === 200){
 				uni.hideLoading()
 				uni.showToast({
-					title: '成功注册，正在为您登录...',
+					title: '成功注册，正在为您自动登录...',
 					icon: 'none',
 				});
-				const user = {
-					username:username.value,
-					id:res.result.userId,
-				}
-				uni.setStorageSync('user', user);
-				uni.switchTab({
-					url:"/pages/index/index"
-				})
+				getUserInfoFunc(res.result.uid)
 			}else{
 				uni.showToast({
 					title: res.result.message,
@@ -112,6 +105,31 @@
 			}
 		}
 	}
+	
+	/**
+	 * 获取当前用户信息
+	 * @param uid 用户id
+	 */
+	const getUserInfoFunc = async(uid : string)=>{
+		try {
+			const res = await uniCloud.callFunction({
+				name:"api_get_user_info",
+				data:{
+					uid,
+				}
+			})
+			
+			const userInfo = {...res.result.data[0]}
+			console.log('api_get_user_info',userInfo);
+			uni.setStorageSync('userInfo', userInfo);
+			uni.switchTab({
+				url:"/pages/index/index"
+			})
+		} catch (error) {
+			//TODO handle the exception
+		}
+	}
+	
 
 	// 前往登录
 	const goToLogin = () => {

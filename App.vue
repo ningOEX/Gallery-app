@@ -22,7 +22,7 @@
 			},
 
 			getUser() {
-				const user = uni.getStorageSync('user');
+				const user = uni.getStorageSync('userInfo');
 				if (!user) {
 					uni.reLaunch({
 						url: '/pages/login/index'

@@ -5,8 +5,8 @@
 				<view class="user-avatar">
 					<image src="/static/default.png" mode="aspectFit" class="image"></image>
 					<view class="user-name">
-						<text class="name">{{user.username}}</text>
-						<text class="uid">uid:{{user.id}}</text>
+						<text class="name">{{user.nickname}}</text>
+						<text class="uid">uid:{{user._id}}</text>
 					</view>
 				</view>
 				<view class="user-uid-text-content">
@@ -51,7 +51,8 @@
 	import { ref } from "vue"
 	import type {User} from "@/model/user"
 	import { onShow,onLoad } from "@dcloudio/uni-app"
-	const app = getApp()
+	import {IAppOption} from "@/model/IAppOption"
+	const app = getApp<IAppOption>()
 	
 	const tabList = [{
 		text: '作品',
@@ -71,7 +72,12 @@
 		link: '',
 	},]
 	
-	const user = ref<User>({} as null)
+	const user = ref<User>({
+		_id: "",
+		nickname: "",
+		phone: "",
+		createdAt: ""
+	})
 	
 	onShow(()=>{
 		console.log('user onShow!');
@@ -88,7 +94,7 @@
 			content: '是否退出登录？',
 			success: function (res) {
 				if (res.confirm) {
-					uni.removeStorageSync('user');
+					uni.removeStorageSync('userInfo');
 					uni.reLaunch({
 						url:'/pages/login/index'
 					})

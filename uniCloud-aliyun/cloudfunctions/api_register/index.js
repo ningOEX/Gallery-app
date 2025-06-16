@@ -3,13 +3,13 @@ const db = uniCloud.database();
 const userCollection  = db.collection('users'); // 假设您有一个用户集合
 
 exports.main = async (event, context) => {
-    const { username, password } = event;
+    const {  password,phone } = event;
 
 	//  // 加密密码
 	// const hashedPassword = await bcrypt.hash(password, 10);
 
     // 检查用户名是否已存在
-    const existingUser = await userCollection.where({ username }).get();
+    const existingUser = await userCollection.where({ phone }).get();
     if (existingUser.data.length > 0) {
         return {
             code: 400,
@@ -19,14 +19,15 @@ exports.main = async (event, context) => {
 
     // 插入新用户
     const res = await userCollection.add({
-        username,
+        phone,
         password,
+		nickname:phone,
         createdAt: new Date()
     });
 
     return {
         code: 200,
         message: '注册成功',
-        userId: res.id
+        uid: res.id
     };
 };
