@@ -1,0 +1,7 @@
+{
+  "name": "api_get_hot_week_list",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}
