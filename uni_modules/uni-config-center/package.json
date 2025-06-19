@@ -6,12 +6,12 @@
   "keywords": [
     "配置",
     "配置中心"
-],
+  ],
   "repository": "",
   "engines": {
     "HBuilderX": "^3.1.0"
   },
-"dcloudext": {
+  "dcloudext": {
     "sale": {
       "regular": {
         "price": "0.00"
@@ -72,8 +72,8 @@
           "联盟": "u"
         },
         "Vue": {
-            "vue2": "y",
-            "vue3": "u"
+          "vue2": "y",
+          "vue3": "u"
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <view class="container" style="padding-top: env(safe-area-inset-top);">
+  <view class="container" style="padding-top: env(safe-area-inset-top)">
     <!-- 背景图全屏 -->
     <image class="bg-image" :src="imageData.src" mode="aspectFill" />
 
