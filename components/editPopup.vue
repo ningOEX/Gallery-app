@@ -2,10 +2,10 @@
   <page-container :show="porps.showPop" @leave="leave" position="center" close-on-slide-down="true">
     <view class="edit-container">
       <text class="title">{{ currentType === 0 ? '修改昵称!' : '修改密码!' }}</text>
-
+		{{submitInfo.nickname}}
       <view v-if="porps.currentType === 0" class="edit-input">
         <uni-easyinput
-          type="number"
+          type="text"
           placeholder-style="font-size:30rpx;"
           maxlength="11"
           v-model="submitInfo.nickname"
@@ -52,7 +52,8 @@ const submitInfo = ref<EditInfo>({
 
 watch(
   () => porps.showPop,
-  () => {
+  (newVal) => {
+	if(newVal)return
     submitInfo.value = {
       nickname: '', // 昵称
       oldPwd: '', // 旧密码
@@ -69,6 +70,7 @@ const leave = () => {
 
 // 保存
 const submit = () => {
+	console.log(submitInfo.value);
   emit('submit', submitInfo.value)
   // submitInfo.value = {
   // 	nickname: "", // 昵称

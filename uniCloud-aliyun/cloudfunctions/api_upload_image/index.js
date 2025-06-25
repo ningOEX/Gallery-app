@@ -1,36 +1,76 @@
 'use strict'
 
 const db = uniCloud.database()
-const { file } = require('uni-cloud')
+
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP"
 
 exports.main = async (event, context) => {
-  const { title, description, src, username, views = 0, uid, type } = event // 从请求中获取数据
+	console.log('[event]', event);
+	const {
+		token,
+		title,
+		description,
+		images,
+		views = 0,
+		type,
+		dowlodURL,
+		createdAt,
+		timestamp
+	} = event // 从请求中获取数据
 
-  // 检查必填字段
-  if (!title || !content || !src || !uid | !username | !type) {
-    return {
-      code: 400,
-      message: '请填写完整~',
-    }
-  }
+	if (!token) {
+		return {
+			code: 401,
+			message: '未授权'
+		};
+	}
 
-  // 存储文章到数据库
-  const articleData = {
-    title,
-    description,
-    src,
-    username,
-    views,
-    uid,
-    type,
-    createdAt: new Date(),
-  }
+	// 检查必填字段
+	if (!title || !description || !images || !type) {
+		return {
+			code: 400,
+			message: '请填写完整~',
+		}
+	}
 
-  await db.collection('images_list').add(articleData)
+	try {
+		// 验证token
+		const decoded = jwt.verify(token, SECRET_KEY)
+		const phone = decoded.phone;
 
-  return {
-    code: 200,
-    message: '发布成功',
-    data: articleData,
-  }
+		// 获取用户信息
+		const userRecord = await db.collection('users').where({
+			phone
+		}).get();
+
+		const articleData = {
+			title,
+			description,
+			images,
+			nickname: userRecord.data[0].nickname,
+			views,
+			uid: userRecord.data[0]._id,
+			type,
+			dowlodURL,
+			createdAt,
+			timestamp,
+		}
+
+		await db.collection('images_list').add(articleData)
+		
+		return {
+			code: 200,
+			message: '发布成功',
+			uid:userRecord.data[0]._id
+		}
+
+	} catch (error) {
+		//TODO handle the exception
+		return {
+			code: 200,
+			message: error.message,
+		}
+	}
+	
 }

@@ -9,52 +9,50 @@
         />
       </view>
     </view>
+	<my-empty v-if="!images.length" title="暂无数据~"></my-empty>
   </scroll-view>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import ImageCard from '../../components/home/image-card.vue'
+import { ref } from 'vue'
+import {onLoad} from "@dcloudio/uni-app"
+import ImageCard from '@/components/home/image-card.vue'
+import {ImagesForm} from "@/model/ImagesForm"
 
-interface ImageItem {
-  src: string
-  avatar: string
-  username: string
-  id: string
-  views: number
+import myEmpty from '@/components/my-empty.vue'
+
+
+const images = ref<ImagesForm[]>([])
+
+const fetchDataFunc = async()=>{
+	uni.showLoading({
+		title:"加载中..",
+	})
+	try{
+		const result = await uniCloud.callFunction({
+			name:"api_get_hot_week_list",
+			data:{
+				page:1,
+				pageSize:10
+			}
+		})
+		images.value = result.result.data
+		
+	}catch (err){
+		uni.showToast({
+			title:err.message,
+			icon:"none"
+		})
+	}finally{
+		uni.hideLoading()
+	}
 }
 
-const images = reactive<ImageItem[]>([
-  {
-    src: 'https://pic.616pic.com/photoone/00/01/28/618ced352f5335310.jpg',
-    avatar: '../../static/banner/banner_1.jpg',
-    username: '花无**歇',
-    id: '123456',
-    views: 686,
-  },
-  {
-    src: '../../static/banner/banner_2.jpg',
-    avatar: '../../static/banner/banner_2.jpg',
-    username: '闻哥**',
-    id: '123456',
-    views: 232,
-  },
-  {
-    src: '../../static/banner/banner_3.jpg',
-    avatar: '../../static/banner/banner_3.jpg',
-    username: '范**冰',
-    id: '123456',
-    views: 281,
-  },
-  {
-    src: 'https://pic.616pic.com/photoone/00/01/28/618ced352f5335310.jpg',
-    avatar: '../../static/banner/banner_1.jpg',
-    username: 'V**',
-    id: '123456',
-    views: 109,
-  },
-  // 更多图片...
-])
+onLoad(()=>{
+	fetchDataFunc()
+})
+
+
 </script>
 
 <style scoped>

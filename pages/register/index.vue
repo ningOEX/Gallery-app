@@ -37,7 +37,6 @@
           placeholder="再次输入密码"
         ></uni-easyinput>
       </view>
-      <!-- <text class="forgot-password">忘记密码？</text> -->
       <button class="login-button" @click="registerUser">立即注册</button>
       <view class="register-link">
         <text>已有账号！<text @click="goToLogin" class="register">前往登录</text></text>
@@ -115,10 +114,16 @@ const registerUser = async () => {
     if (res.result.code === 200) {
       uni.hideLoading()
       uni.showToast({
-        title: '成功注册，正在为您自动登录...',
+        title: '成功注册！',
         icon: 'none',
+		duration:2000,
       })
-      getUserInfoFunc(res.result.uid)
+	  setTimeout(()=>{
+		  uni.redirectTo({
+		  	url:"/pages/login/index"
+		  })
+	  },2000)
+      // getUserInfoFunc(res.result.uid)
     } else {
       uni.showToast({
         title: res.result.message,

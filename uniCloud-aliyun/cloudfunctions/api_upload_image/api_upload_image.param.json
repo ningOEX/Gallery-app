@@ -1,0 +1,17 @@
+// 本文件中的json内容将在云函数【运行】时作为参数传给云函数。
+// 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/rundebug.html#runparam
+{
+	"title": "1",
+	"description": "1",
+	"images": [
+		"https://mp-051db2f0-3127-4e50-bacf-ac94f022bbd7.cdn.bspapp.com/uploads/1750384525015_XzBdCjLsHDUBa24c545a07603fb70c0d9df55f71a7c2.jpg"
+	],
+	"dowlodURL": [{
+		"fileID": "https://mp-051db2f0-3127-4e50-bacf-ac94f022bbd7.cdn.bspapp.com/uploads/1750384525015_XzBdCjLsHDUBa24c545a07603fb70c0d9df55f71a7c2.jpg",
+		"tempFileURL": "https://mp-051db2f0-3127-4e50-bacf-ac94f022bbd7.cdn.bspapp.com/uploads/1750384525015_XzBdCjLsHDUBa24c545a07603fb70c0d9df55f71a7c2.jpg"
+	}],
+	"type": "nature_type",
+	"views": 0,
+	"nickname": "风知我意",
+	"uid": "684fd8a7a09a9b16db416a5a"
+}

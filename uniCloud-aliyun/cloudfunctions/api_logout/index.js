@@ -1,41 +1,47 @@
-'use strict'
+'use strict';
 
-// 云函数 getUserInfo.js
-const db = uniCloud.database();
+const db = uniCloud.database()
 const jwt = require('jsonwebtoken');
 const key = "zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP"
 
 exports.main = async (event, context) => {
-	// const token = context.USER_INFO ? context.USER_INFO.token : null;
+	console.log(event);
+	//event为客户端上传的参数
 	const {token} = event
-
+	
 	if (!token) {
 		return {
 			code:401,
 			message: '未授权'
 		};
 	}
-
-	try {
-		   // 验证 token
+	
+	try{
+		// 验证 token
 		const decoded = jwt.verify(token, key);
 		const phone = decoded.phone;
-
 		// 获取用户信息
 		const userRecord = await db.collection('users').where({
 			phone
 		}).get();
 		
-		delete userRecord.data[0].password
+		const uid = userRecord.data[0]._id
+		
+		// 删除用户 images_list 数据
+		await db.collection("images_list").where({uid}).remove() 
+		
+		// 删除用户记录
+		await db.collection("users").doc(uid).remove()
 		
 		return {
-			code: 200,
-			user: userRecord.data[0]
-		};
+			code:200,
+			message:"注销成功"
+		}
+		
 	} catch (error) {
 		return {
-			code: 400,
-			message: '无效的 token'
+			code: 401,
+			message: error.message
 		};
 	}
 };

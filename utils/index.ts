@@ -3,9 +3,9 @@
  * @param {string} phoneNumber
  * @return
  */
-export const validatePhoneNumber = (phoneNumber: string) => {
-  const phoneRegex = /^1[3-9]\d{9}$/
-  return phoneRegex.test(phoneNumber)
+export const validatePhoneNumber = (phoneNumber : string) => {
+	const phoneRegex = /^1[3-9]\d{9}$/
+	return phoneRegex.test(phoneNumber)
 }
 
 /**
@@ -13,38 +13,75 @@ export const validatePhoneNumber = (phoneNumber: string) => {
  * @param {string} password
  * @return
  */
-export const validatePassword = (password: string) => {
-  const passwordRegex = /^.{6,18}$/
-  return passwordRegex.test(password)
+export const validatePassword = (password : string) => {
+	const passwordRegex = /^.{6,18}$/
+	return passwordRegex.test(password)
 }
 
 /**
  * 手机号打码中间四位
  */
-export const maskPhoneNumber = (phoneNumber: string) => {
-  // 确保电话号码格式正确
-  const regex = /^(\d{3})(\d{4})(\d{4})$/
-  const match = phoneNumber.match(regex)
+export const maskPhoneNumber = (phoneNumber : string) => {
+	// 确保电话号码格式正确
+	const regex = /^(\d{3})(\d{4})(\d{4})$/
+	const match = phoneNumber.match(regex)
 
-  if (match) {
-    // 替换中间四位为星号
-    return `${match[1]}****${match[3]}`
-  } else {
-    throw new Error('电话号码格式不正确')
-  }
+	if (match) {
+		// 替换中间四位为星号
+		return `${match[1]}****${match[3]}`
+	} else {
+		throw new Error('电话号码格式不正确')
+	}
 }
 
 /**
  * 名称打码 长度大于3才做处理
  */
-export const maskName = (name: string) => {
-  if (name.length <= 2) {
-    return name // 如果名字长度小于等于2，不做处理
-  }
+export const maskName = (name : string) => {
+	if (name.length <= 2) {
+		return name // 如果名字长度小于等于2，不做处理
+	}
 
-  const firstChar = name.charAt(0)
-  const lastChar = name.charAt(name.length - 1)
-  const maskedPart = '*'.repeat(name.length - 2) // 中间部分打码
+	const firstChar = name.charAt(0)
+	const lastChar = name.charAt(name.length - 1)
+	const maskedPart = '*'.repeat(name.length - 2) // 中间部分打码
 
-  return `${firstChar}${maskedPart}${lastChar}`
+	return `${firstChar}${maskedPart}${lastChar}`
+}
+
+/**
+ * 获取年月日时分秒
+ */
+export const getCurrentDateTime = () => {
+	const now = new Date();
+
+	const year = now.getFullYear();
+	const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需要加1
+	const day = String(now.getDate()).padStart(2, '0');
+	const hours = String(now.getHours()).padStart(2, '0');
+	const minutes = String(now.getMinutes()).padStart(2, '0');
+	const seconds = String(now.getSeconds()).padStart(2, '0');
+	const timestamp = now.getTime(); // 获取当前时间的时间戳（毫秒）
+
+	return {
+		year,
+		month,
+		day,
+		hours,
+		minutes,
+		seconds,
+		timestamp, // 返回时间戳
+		formatted: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+	};
+}
+
+/**
+ * 判断是否时间戳大于7天
+ */
+export const isPublishedMoreThanSevenDaysAgo = (publishTime : number) => {
+	const now = Date.now(); // 当前时间（毫秒）
+	const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000; // 7天的毫秒数
+
+	// 判断当前时间是否大于发布时间7天
+	return now > (publishTime + sevenDaysInMilliseconds);
 }

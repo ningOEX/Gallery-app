@@ -14,8 +14,9 @@
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import myItemCard from '@/components/home/my-item-card.vue'
+import {IAppOption} from "@/model/IAppOption"
 
-const app = getApp()
+const app = getApp<IAppOption>()
 
 const currentDay = ref(-1)
 

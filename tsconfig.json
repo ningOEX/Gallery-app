@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "types": ["@dcloudio/types", "@vue/runtime-core"],
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node"

@@ -22,21 +22,21 @@
     <view class="nav-content">
       <view class="nav-item" @click="ToEdit">
         <view class="nav-icon">
-          <image src="/static/iconTabBar/icon_my.png" mode="aspectFit" class="icon"></image>
+          <image src="/static/login/icon_user_change.png" mode="aspectFit" class="icon"></image>
           <text>账号管理</text>
         </view>
         <uni-icons type="right" size="20"></uni-icons>
       </view>
       <view class="nav-item">
         <view class="nav-icon">
-          <image src="/static/iconTabBar/icon_my.png" mode="aspectFit" class="icon"></image>
+          <image src="/static/login/icon_manual.png" mode="aspectFit" class="icon"></image>
           <text>客服帮助</text>
         </view>
         <uni-icons type="right" size="20"></uni-icons>
       </view>
       <view class="nav-item" @click="exitHandle">
         <view class="nav-icon">
-          <image src="/static/iconTabBar/icon_my.png" mode="aspectFit" class="icon"></image>
+          <image src="/static/login/icon_exit_login.png" mode="aspectFit" class="icon"></image>
           <text>退出登录</text>
         </view>
         <uni-icons type="right" size="20"></uni-icons>
@@ -103,6 +103,7 @@ const exitHandle = () => {
     content: '是否退出登录？',
     success: function (res) {
       if (res.confirm) {
+		uni.removeStorageSync("token")
         uni.removeStorageSync('userInfo')
         uni.reLaunch({
           url: '/pages/login/index',

@@ -36,7 +36,7 @@ const menuList = reactive<MenuItem[]>([
   { menuTitle: '我要发布', menuIcon: '../../static/iconNavMenu/icon_menu_5.png' },
 ])
 const clickMenuItem = (item: MenuItem) => {
-  console.log('点击了菜单栏：', item)
+  // console.log('点击了菜单栏：', item)
   switch (item.menuTitle) {
     case '最新周更':
       uni.navigateTo({ url: '/pages/hotWeekUpdate/index' })
