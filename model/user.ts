@@ -1,6 +1,6 @@
 export interface User {
   _id: string
-  nickname: string
+  nickname?: string
   phone: string
   createdAt: string
 }

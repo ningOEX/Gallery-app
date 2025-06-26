@@ -1,0 +1,7 @@
+{
+  "name": "api_update_nickname_iamges",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

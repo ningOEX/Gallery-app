@@ -77,11 +77,25 @@ export const getCurrentDateTime = () => {
 
 /**
  * 判断是否时间戳大于7天
+ * @param publishTime 时间戳
+ * @param isConfine 是否作判断
  */
-export const isPublishedMoreThanSevenDaysAgo = (publishTime : number) => {
-	const now = Date.now(); // 当前时间（毫秒）
-	const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000; // 7天的毫秒数
+export const isPublishedMoreThanSevenDaysAgo = (publishTime : number,isConfine : boolean) => {
+	if(isConfine){
+		const now = Date.now(); // 当前时间（毫秒）
+		const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000; // 7天的毫秒数
+		
+		// 判断当前时间是否大于发布时间7天
+		return now > (publishTime + sevenDaysInMilliseconds);
+	}
+	return false
+}
 
-	// 判断当前时间是否大于发布时间7天
-	return now > (publishTime + sevenDaysInMilliseconds);
+/**
+ * 获取胶囊距离顶部距离
+ */
+export const getStatusBarHeight = () => {
+  const menuButtonInfo = wx.getMenuButtonBoundingClientRect()
+  // console.log(menuButtonInfo);
+  return `padding-top:${menuButtonInfo.top}px;`
 }

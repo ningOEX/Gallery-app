@@ -116,13 +116,13 @@ const registerUser = async () => {
       uni.showToast({
         title: '成功注册！',
         icon: 'none',
-		duration:2000,
+		duration:1000,
       })
 	  setTimeout(()=>{
 		  uni.redirectTo({
 		  	url:"/pages/login/index"
 		  })
-	  },2000)
+	  },1000)
       // getUserInfoFunc(res.result.uid)
     } else {
       uni.showToast({

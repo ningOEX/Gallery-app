@@ -15,4 +15,6 @@ export interface ImagesForm {
   createdAt?:string // 创建时间
   timestamp: number // 时间戳
   token?: string | null
+  _id?: string,
+  typeName?:string
 }

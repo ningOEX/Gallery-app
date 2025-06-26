@@ -21,13 +21,10 @@
 import { ref } from 'vue'
 const info = [
   {
-    content: '/static/banner/banner_1.jpg',
+    content: 'https://mp-051db2f0-3127-4e50-bacf-ac94f022bbd7.cdn.bspapp.com/banner/pexels-photo-31832862.jpeg',
   },
   {
-    content: '/static/banner/banner_2.jpg',
-  },
-  {
-    content: '/static/banner/banner_3.jpg',
+    content: 'https://mp-051db2f0-3127-4e50-bacf-ac94f022bbd7.cdn.bspapp.com/banner/pexels-photo-31962880.jpeg',
   },
 ]
 

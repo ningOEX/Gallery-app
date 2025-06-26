@@ -104,7 +104,7 @@
 							uni.showToast({
 								title: '成功注销',
 								icon:"none",
-								duration:2000
+								duration:1000
 							})
 							uni.removeStorageSync("token")
 							uni.removeStorageSync('userInfo')
@@ -112,7 +112,7 @@
 								uni.reLaunch({
 									url: "/pages/login/index"
 								})
-							},2000)
+							},1000)
 						} else {
 							uni.showToast({
 								title: res.result.message,
@@ -169,12 +169,21 @@
 			})
 			return
 		}
-		currentType.value === 1 ? changePassword(oldPwd, newPassword) : changeNickname(nickname)
-
+		
+		try {
+			uni.showLoading({
+				title:"正在执行..."
+			})
+			currentType.value === 1 ? changePassword(oldPwd, newPassword) : changeNickname(nickname)
+		} catch (error) {
+			//TODO handle the exception
+		} finally{
+			uni.hideLoading()
+		}
 	}
 
 	// 修改昵称
-	const changeNickname = async(nickname ?: string) => {
+	const changeNickname = async(nickname?: string) => {
 		app.globalData.tokenValidity()
 		try {
 			const res = await uniCloud.callFunction({
@@ -184,6 +193,14 @@
 					nickname,
 				}
 			});
+			await uniCloud.callFunction({
+				name:"api_update_nickname_iamges",
+				data:{
+					nickname,
+					uid:user.value._id
+				}
+			})
+			user.value.nickname = nickname
 			showToastFunc(res)
 		} catch (error) {
 			console.error('请求修改密昵称失败:', error);
@@ -198,7 +215,6 @@
 	// 修改密码函数
 	const changePassword = async (oldPwd ?: string, newPassword ?: string) => {
 		app.globalData.tokenValidity()
-		
 		try {
 			const res = await uniCloud.callFunction({
 				name: 'api_edit_user_info',
@@ -230,7 +246,7 @@
 				duration:2000
 			})
 			showPop.value = false
-			
+			app.globalData.updateUserInfo()
 		} else {
 			console.error('修改失败:', res.result.message);
 			uni.showToast({

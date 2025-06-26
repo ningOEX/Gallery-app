@@ -1,0 +1,7 @@
+{
+  "name": "api_get_image_details",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

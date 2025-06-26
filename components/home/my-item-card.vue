@@ -31,10 +31,8 @@ const getTypesFunc = async()=>{
 }
 
 const changeCard = (item: TypeSort)=>{
-	console.log(item);
-	uni.showToast({
-		title:"开发中",
-		icon:'none'
+	uni.navigateTo({
+		url:`/pages/detailsSort/index?type=${item.value}`
 	})
 }
 

@@ -1,81 +1,85 @@
 {
-  "pages": [
-    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-    {
-      "path": "pages/index/index",
-      "style": {
-        "navigationBarTitleText": "推荐",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/login/index",
-      "style": {
-        "navigationBarTitleText": "登录",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/register/index",
-      "style": {
-        "navigationBarTitleText": "注册",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/user/index",
-      "style": {
-        "navigationBarTitleText": "我的",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/upload/index",
-      "style": {
-        "navigationBarTitleText": "发布"
-      }
-    },
-    {
-      "path": "pages/hotWeekUpdate/index",
-      "style": {
-        "navigationBarTitleText": "热门周更"
-      }
-    },
-    {
-      "path": "pages/imageDetails/index",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "图片详情"
-      }
-    },
-    {
-      "path": "pages/editUserInfo/index",
-      "style": {
-        "navigationBarTitleText": "账户管理"
-      }
-    }
-  ],
-  "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "图库",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
-  },
-  "tabBar": {
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "iconPath": "/static/iconTabBar/icon_home.png",
-        "selectedIconPath": "/static/iconTabBar/icon_home_active.png",
-        "text": "推荐"
-      },
-      {
-        "pagePath": "pages/user/index",
-        "iconPath": "/static/iconTabBar/icon_my.png",
-        "selectedIconPath": "/static/iconTabBar/icon_my_active.png",
-        "text": "我的"
-      }
-    ]
-  },
-  "uniIdRouter": {}
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "推荐",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/register/index",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/upload/index",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		},
+		{
+			"path": "pages/hotWeekUpdate/index",
+			"style": {
+				"navigationBarTitleText": "热门周更"
+			}
+		},
+		{
+			"path": "pages/imageDetails/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "图片详情"
+			}
+		},
+		{
+			"path": "pages/editUserInfo/index",
+			"style": {
+				"navigationBarTitleText": "账户管理"
+			}
+		},
+		{
+			"path": "pages/detailsSort/index",
+			"style": {
+				"navigationBarTitleText": "主题列表"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "图库",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "/static/iconTabBar/icon_home.png",
+				"selectedIconPath": "/static/iconTabBar/icon_home_active.png",
+				"text": "推荐"
+			},
+			{
+				"pagePath": "pages/user/index",
+				"iconPath": "/static/iconTabBar/icon_my.png",
+				"selectedIconPath": "/static/iconTabBar/icon_my_active.png",
+				"text": "我的"
+			}
+		]
+	},
+	"uniIdRouter": {}
 }

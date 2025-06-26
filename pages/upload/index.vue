@@ -54,6 +54,7 @@
 		images: [],
 		dowlodURL: [],
 		type: 'nature_type',
+		typeName:"自然",
 		views: 0,
 		createdAt:getCurrentDateTime().formatted,
 		timestamp: getCurrentDateTime().timestamp,
@@ -98,8 +99,9 @@
 	})
 
 	// 类型选择
-	const change = (e : Event) => {
-		
+	const change = (e : any) => {
+		imagesForm.value.type = e.detail.data.value
+		imagesForm.value.typeName = e.detail.data.text
 	}
 	
 

@@ -14,6 +14,7 @@ exports.main = async (event, context) => {
 		images,
 		views = 0,
 		type,
+		typeName,
 		dowlodURL,
 		createdAt,
 		timestamp
@@ -52,6 +53,7 @@ exports.main = async (event, context) => {
 			views,
 			uid: userRecord.data[0]._id,
 			type,
+			typeName,
 			dowlodURL,
 			createdAt,
 			timestamp,
@@ -68,7 +70,7 @@ exports.main = async (event, context) => {
 	} catch (error) {
 		//TODO handle the exception
 		return {
-			code: 200,
+			code: 401,
 			message: error.message,
 		}
 	}

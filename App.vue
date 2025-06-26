@@ -4,6 +4,8 @@
 			console.log('App Launch')
 			this.globalData.getTodayWeekDay()
 			this.globalData.getUser()
+			this.globalData.updateUserInfo()
+			this.globalData.tokenValidity()
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -42,11 +44,12 @@
 							token,
 						},
 					})
-					if(user.result.code === 200){
-						uni.setStorageSync('userInfo',user.result.user)
+					if(result.result.code === 200){
+						console.log('update 200');
+						uni.setStorageSync('userInfo',result.result.user)
 					}else{
 						uni.showToast({
-							title:user.result.message,
+							title:result.result.message,
 							icon:"none"
 						})
 					}

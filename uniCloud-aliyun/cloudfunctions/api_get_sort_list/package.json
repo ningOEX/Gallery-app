@@ -1,0 +1,7 @@
+{
+  "name": "api_get_sort_list",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

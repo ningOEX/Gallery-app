@@ -1,0 +1,7 @@
+{
+  "name": "api_increase_views",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

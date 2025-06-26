@@ -1,5 +1,5 @@
 <template>
-  <view class="search-content" :style="menuBtnTop">
+  <view class="search-content" :style="getStatusBarHeight()">
     <view class="input-view">
       <uni-icons class="input-uni-icon" type="search" size="18" color="#999" />
       <input
@@ -18,19 +18,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-
-const menuBtnTop = ref<string>('')
+import {getStatusBarHeight} from "@/utils/index"
 
 const emit = defineEmits(['search'])
 
-/**
- * 获取胶囊距离顶部距离
- */
-const getStatusBarHeight = () => {
-  const menuButtonInfo = wx.getMenuButtonBoundingClientRect()
-  // console.log(menuButtonInfo);
-  menuBtnTop.value = `padding-top:${menuButtonInfo.top}px;`
-}
 
 /**
  * 搜索
