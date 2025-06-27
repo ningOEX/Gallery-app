@@ -1,4 +1,5 @@
 node_modules
 /unpackage/
+package-lock.json
 public
 *.d.ts 

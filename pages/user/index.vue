@@ -9,7 +9,11 @@
 						<text class="uid">uid:{{ user._id }}</text>
 					</view>
 				</view>
-				<view class="user-uid-text-content"> 简介：这个人很懒，什么都没有留下~ </view>
+				<view class="user-uid-text-content">
+					<text class="text_content">{{user?.introduction ? user.introduction : '这个人很懒，什么都没有留下~ '}} </text>
+					<image class="icon" src="/static/icon_write.png" mode="aspectFit" @click="changeIntroduction">
+					</image>
+				</view>
 				<view class="tab-content">
 					<view class="tab-item" v-for="(item, index) in tabList" :key="index" @click="toGo(item)">
 						<text class="tab-total">0</text>
@@ -42,6 +46,12 @@
 				<uni-icons type="right" size="20"></uni-icons>
 			</view>
 		</view>
+
+		<!-- 弹框 -->
+		<uni-popup ref="refDialog" type="dialog">
+			<uni-popup-dialog ref="inputClose" mode="input" title="个人签墙" v-model="introduction" placeholder="说点什么吧~"
+				@confirm="dialogInputConfirm" @close="introduction = ''"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -52,10 +62,12 @@
 	import { IAppOption } from '@/model/IAppOption'
 	const app = getApp<IAppOption>()
 
+	let token : string;
+
 	const tabList = [
 		{
 			text: '作品',
-			path: 'pages/works/index',
+			path: '',
 			link: '',
 		},
 		{
@@ -80,10 +92,18 @@
 		nickname: '',
 		phone: '',
 		createdAt: '',
+		introduction: '',
+	})
+
+	const introduction = ref<string>('')
+
+	const refDialog = ref() // Ref弹框
+
+	onLoad(() => {
+		token = uni.getStorageSync("token")
 	})
 
 	onShow(() => {
-		console.log('user onShow!')
 		app.globalData.getUser()
 		user.value = app.globalData.user
 	})
@@ -92,6 +112,46 @@
 		uni.navigateTo({
 			url: '/pages/editUserInfo/index',
 		})
+	}
+
+	// 编辑个人简介
+	const changeIntroduction = () => {
+		refDialog.value.open()
+	}
+
+	// 弹框保存
+	const dialogInputConfirm = async () => {
+		uni.showLoading({
+			title: "正在保存"
+		})
+		try {
+			const result = await uniCloud.callFunction({
+				name: "api_update_user_info",
+				data: {
+					token,
+					introduction: introduction.value
+				}
+			})
+			if (result.result?.code === 200) {
+				uni.showToast({
+					title: "保存成功",
+					icon: "none"
+				})
+				app.globalData.updateUserInfo()
+				app.globalData.getUser()
+				user.value = app.globalData.user
+				user.value.introduction = introduction.value
+			}
+
+		} catch (error) {
+			//TODO handle the exception
+			uni.showToast({
+				title: error.message
+			})
+		} finally {
+			uni.hideLoading()
+		}
+		console.log(introduction.value);
 	}
 
 	/**
@@ -111,19 +171,18 @@
 				}
 			},
 		})
-	} 
-	
+	}
+
 	// 
-	const toGo = (item: {text:string,path:string,link:string})=>{
-		if(!item.path){
-			 uni.showToast({
-				title:"敬请期待",
-				icon:"none"
+	const toGo = (item : { text : string, path : string, link : string }) => {
+		if (!item.path) {
+			uni.showToast({
+				title: "敬请期待",
+				icon: "none"
 			})
-			return                  
+			return
 		}
 	}
-	
 </script>
 
 <style lang="scss" scoped>
@@ -177,6 +236,8 @@
 				}
 
 				.user-uid-text-content {
+					display: flex;
+					align-items: center;
 					font-size: 30rpx;
 					margin-top: 10rpx;
 					min-height: 130rpx;
@@ -192,6 +253,11 @@
 					/* 垂直方向排列 */
 					-webkit-line-clamp: 3;
 					/* 限制行数为 3 行 */
+
+					.icon {
+						width: 32rpx;
+						height: 32rpx;
+					}
 				}
 			}
 		}

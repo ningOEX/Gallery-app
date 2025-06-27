@@ -1,6 +1,8 @@
 {
   "name": "api_get_user_info",
-  "dependencies": {},
+  "dependencies": {
+	  "jsonwebtoken": "^9.0.2"
+  },
   "extensions": {
     "uni-cloud-jql": {}
   }

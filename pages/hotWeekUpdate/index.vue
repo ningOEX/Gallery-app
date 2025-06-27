@@ -72,7 +72,7 @@
 
 <style lang="scss" scoped>
 	.scroll-view {
-		height: 100vh;
+		min-height: 100vh;
 		/* 或其他固定高度 */
 		overflow-y: auto;
 		/* 确保可以垂直滚动 */

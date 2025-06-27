@@ -11,13 +11,6 @@
 		</view>
 
 		<view class="nav-content">
-			<!-- 	<view class="nav-item">
-				<view class="nav-icon">
-					<image src="/static/iconTabBar/icon_my.png" mode="aspectFit" class="icon"></image>
-					<text>修改昵称</text>
-				</view>
-				<uni-icons type="right" size="20"></uni-icons>
-			</view> -->
 			<view class="nav-item" @click="edit(types.password)">
 				<view class="nav-icon">
 					<image src="/static/login/icon_change_pwd.png" mode="aspectFit" class="icon"></image>
@@ -169,11 +162,10 @@
 			})
 			return
 		}
-		
+		uni.showLoading({
+			title:"正在执行..."
+		})
 		try {
-			uni.showLoading({
-				title:"正在执行..."
-			})
 			currentType.value === 1 ? changePassword(oldPwd, newPassword) : changeNickname(nickname)
 		} catch (error) {
 			//TODO handle the exception

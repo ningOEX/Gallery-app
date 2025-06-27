@@ -64,7 +64,10 @@
         "appid" : "wx3477ed980fed9a56",
         "cloudfunctionRoot" : "cloudfunctions/", // 配置云开发目录
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true,
+            "postcss" : true,
+            "minified" : true
         },
         "usingComponents" : true
     },

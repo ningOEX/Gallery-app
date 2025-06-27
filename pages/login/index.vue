@@ -13,8 +13,10 @@
 				<uni-easyinput type="password" placeholder-style="font-size:30rpx;" maxlength="18" v-model="password"
 					:input-border="false" placeholder="请输入密码"></uni-easyinput>
 			</view>
-
-			<text class="forgot-password">忘记密码？</text>
+			<view class="tip">
+				<view class="error">{{messageError}}</view>
+				<text class="forgot-password">忘记密码？</text>
+			</view>
 			<button class="login-button" @click="handleLogin">登录</button>
 			<view class="register-link">
 				<text>还没有登录账号？<text @click="goToRegister" class="register">立即注册</text></text>
@@ -26,8 +28,11 @@
 <script setup lang="ts">
 	import { ref } from 'vue'
 
-	const phone = ref('')
-	const password = ref('')
+	const phone = ref<string>('')
+	const password = ref<string>('')
+	
+	const messageError = ref<string>('')
+	
 	let token: string;
 	// 登录
 	const handleLogin = async () => {
@@ -52,8 +57,10 @@
 			})
 			if(res.result.code === 200){
 				token = res.result.token
+				messageError.value = ''
 				uni.setStorageSync("token",token)
 			}else{
+				messageError.value = res.result.message
 				uni.showToast({
 					title:res.result.message,
 					icon:"none"
@@ -68,6 +75,7 @@
 					token
 				}
 			})
+			
 			if(user.result.code === 200){
 				uni.showToast({
 					title:"登录成功"
@@ -76,14 +84,10 @@
 				uni.switchTab({
 					url:"/pages/index/index"
 				})
-			}else{
-				uni.showToast({
-					title:user.result.message,
-					icon:"none"
-				})
 			}
 		} catch (error) {
 			//TODO handle the exception
+			console.log('error',error);
 			uni.showToast({
 				title:error.message,
 				icon:"none"
@@ -121,7 +125,21 @@
 			max-width: 400px;
 			box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
 			margin: 0 20rpx;
-
+			
+			.tip{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				
+				.error{
+					flex: 1;
+					display: inline-block;
+					font-size: 26rpx;
+					color: #f40;
+					padding-left: 20rpx;
+				}
+			}
+			
 			.title {
 				font-size: 24px;
 				margin-bottom: 20px;
@@ -148,7 +166,6 @@
 				text-align: right;
 				display: inline-block;
 				padding: 10rpx 0;
-				width: 100%;
 			}
 
 			.login-button {

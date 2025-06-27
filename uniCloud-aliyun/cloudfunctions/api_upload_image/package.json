@@ -1,6 +1,8 @@
 {
   "name": "api_upload_image",
-  "dependencies": {},
+  "dependencies": {
+	  "jsonwebtoken": "^9.0.2"
+  },
   "extensions": {
     "uni-cloud-jql": {}
   }

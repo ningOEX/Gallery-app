@@ -1,7 +1,7 @@
 {
-  "name": "api_register",
+  "name": "api_update_user_info",
   "dependencies": {
-	  "bcryptjs": "^3.0.2",
+	  "jsonwebtoken": "^9.0.2"
   },
   "extensions": {
     "uni-cloud-jql": {}

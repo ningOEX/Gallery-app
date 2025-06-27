@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class="scroll-view" :scroll-y="true"  :refresher-triggered="triggered">
+	<scroll-view class="scroll-view" :scroll-y="true" @scrolltolower="scrolltolower">
 		<view class="container">
 			<ImageCard v-for="(item, index) in images" :key="index" :image="item" :is-confine="isConfine" />
 		</view>
@@ -16,7 +16,7 @@
 	import { ImagesForm } from "@/model/ImagesForm"
 
 	import myEmpty from '@/components/my-empty.vue'
-	
+
 
 	const images = ref<ImagesForm[]>([])
 
@@ -27,11 +27,11 @@
 	const end = ref<boolean>(false) // 没有更多了
 
 	const isConfine = ref(false) // 是否限制近七天显示
-	
+
 	const type = ref<string>('') // 
 
 	onLoad((target : any) => {
-		if(!target.type) return
+		if (!target.type) return
 		type.value = target.type
 		fetchData(type.value)
 	})
@@ -62,8 +62,15 @@
 		}
 	}
 
+	// 滚动到底部
 	const scrolltolower = async () => {
-
+		if (total.value === images.value.length) {
+			end.value = true
+			return
+		}
+		loading.value = true
+		page.value++
+		fetchData(type.value)
 	}
 </script>
 
@@ -79,7 +86,7 @@
 			column-gap: 10px;
 			padding: 10px;
 		}
-		
+
 		.loading {
 			text-align: center;
 			padding: 20rpx;

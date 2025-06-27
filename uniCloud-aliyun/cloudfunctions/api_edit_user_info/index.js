@@ -23,7 +23,6 @@ exports.main = async (event, context) => {
 	try {
 		// 验证 token
 		const decoded = jwt.verify(token, key);
-		console.log('[decoded]',decoded);
 		const phone = decoded.phone; // token 中包含手机号
 
 		// 查询用户信息

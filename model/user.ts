@@ -3,4 +3,5 @@ export interface User {
   nickname?: string
   phone: string
   createdAt: string
+  introduction?:string
 }
