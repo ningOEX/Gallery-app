@@ -235,6 +235,9 @@
 					title:'更新成功',
 					icon:"none"
 				})
+				app.globalData.updateUserInfo()
+				app.globalData.getUser()
+				user.value = app.globalData.user
 				saveHistoryAvatar()
 			}else{
 				// 保存失败

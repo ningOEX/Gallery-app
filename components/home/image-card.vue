@@ -1,13 +1,13 @@
 <template>
-	<view v-if="!isPublishedMoreThanSevenDaysAgo(image.timestamp,props.isConfine)" class="card">
-		<image @click="toImageDetails" :src="image.dowlodURL[0].tempFileURL" mode="widthFix" class="main-image" />
+	<view v-if="!isPublishedMoreThanSevenDaysAgo(props.image.timestamp,props?.isConfine)" class="card">
+		<image @click="toImageDetails" :src="props.image.dowlodURL[0].tempFileURL" mode="widthFix" class="main-image" />
 		<view class="card-footer" @click="handleUserInfo(image)">
-			<image src="/static/default.png" class="avatar" />
-			<text class="username">{{ validatePhoneNumber(image.nickname) ? maskPhoneNumber(image.nickname) : maskName(image.nickname) }}</text>
+			<image :src="props.image?.avatar ? props.image.avatar[0].tempFileURL : '/static/default.png'" class="avatar" />
+			<text class="username">{{ validatePhoneNumber(props.image.nickname) ? maskPhoneNumber(props.image.nickname) : maskName(props.image.nickname) }}</text>
 			<uni-icons type="fire" size="18" color="#999" />
-			<text class="views">{{ image.views }}</text>
+			<text class="views">{{ props.image.views }}</text>
 		</view>
-		<text class="time">{{image.createdAt}}</text>
+		<text class="time">{{props.image.createdAt}}</text>
 	</view>
 </template>
 
@@ -50,7 +50,7 @@
 	}
 	
 	const handleUserInfo = (image : ImagesForm)=>{
-		emits('clickAvatar',image.uid)
+		emits('clickAvatar',props.image.uid)
 	}
 	
 </script>

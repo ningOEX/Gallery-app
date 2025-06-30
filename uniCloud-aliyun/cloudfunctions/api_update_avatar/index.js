@@ -19,8 +19,12 @@ exports.main = async (event, context) => {
 		const result = await db.collection("users").doc(_id).update({
 			avatar
 		})
+		const uid = _id;
+		const iamge_list_result = await db.collection("images_list").where({uid}).update({
+			avatar
+		})
 
-		if (result.updated > 0) {
+		if (result.updated > 0 && iamge_list_result.updated > 0) {
 			return {
 				code: 200,
 				message: '更新成功'

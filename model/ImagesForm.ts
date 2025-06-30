@@ -17,4 +17,5 @@ export interface ImagesForm {
   token?: string | null
   _id?: string,
   typeName?:string
+  avatar?:DowlodURL[]
 }

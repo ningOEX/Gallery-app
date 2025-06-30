@@ -7,7 +7,7 @@
 		<view v-if="end" class="loading">没有更多~</view>
 		<my-empty v-if="!images.length" title="暂无数据~"></my-empty>
 		
-		<user-card-popup v-model="show"></user-card-popup>
+		<user-card-popup v-model="show" :user="currentUser" @leave="handleLeave"></user-card-popup>
 	</scroll-view>
 </template>
 
@@ -20,7 +20,7 @@
 	import myEmpty from '@/components/my-empty.vue'
 	
 	import userCardPopup from '@/components/userCardPopup.vue'
-
+	import {User} from "@/model/user"
 
 	const images = ref<ImagesForm[]>([])
 
@@ -32,16 +32,36 @@
 
 	const isConfine = true; //是否限制近七天展示
 	const show = ref<boolean>() // 查看用户简单信息
+	
+	
+	const currentUser = ref<User>()
+	
+	// 头像详情回调
+	const handleLeave = ()=>{
+		show.value = false
+	}
+	
 	// 头像点击
 	const handleAvatar = async(uid : string)=>{
-		show.value = true
-		console.log('click',uid);
-		const res = await uniCloud.callFunction({
-			name:"api_get_uid_user",
-			data:{
-				_id :uid
-			}
+		uni.showLoading({
+			title:"加载中..."
 		})
+		try{
+			const res = await uniCloud.callFunction({
+				name:"api_get_uid_user",
+				data:{
+					_id :uid
+				}
+			})
+			if(res.result.code === 200){
+				currentUser.value = res.result.data[0]
+				show.value = true
+			}
+		} catch (error){
+			// error
+		}finally{
+			uni.hideLoading()
+		}
 	}
 	
 	// 数据请求

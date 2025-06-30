@@ -3,7 +3,7 @@
 		<view
 			id="_drag_button"
 			class="drag"
-			:style="'left: ' + left + 'px; top:' + top + 'px;'"
+			:style="getStatusBarHeight()"
 			@touchstart="touchstart"
 			@touchmove.stop.prevent="touchmove"
 			@touchend="touchend"
@@ -69,6 +69,11 @@
 			}).exec();
 		},
 		methods: {
+			getStatusBarHeight() {
+			  const menuButtonInfo = wx.getMenuButtonBoundingClientRect()
+			  // console.log(menuButtonInfo);
+			  return `top:${menuButtonInfo.top}px;`
+			},
 			click() {
 				this.$emit('btnClick');
 			},
@@ -128,6 +133,7 @@
 		background-color: rgba(0, 0, 0, 0.5);
 		box-shadow: 0 0 6upx rgba(0, 0, 0, 0.4);
 		color: $uni-text-color-inverse;
+		left: 20rpx;
 		width: 80upx;
 		height: 80upx;
 		border-radius: 50%;

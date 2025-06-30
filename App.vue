@@ -2,6 +2,7 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			this.globalData.update();
 			this.globalData.getTodayWeekDay()
 			this.globalData.getUser()
 			this.globalData.updateUserInfo()
@@ -17,7 +18,7 @@
 		globalData: {
 			currentDay: -1,
 			user: null,
-			vaild:null,
+			vaild: null,
 			// 获取当前星期几
 			getTodayWeekDay() {
 				const date = new Date()
@@ -37,45 +38,45 @@
 			async updateUserInfo() {
 				try {
 					const token = uni.getStorageSync('token')
-					if(!token) return;
+					if (!token) return;
 					const result = await uniCloud.callFunction({
 						name: 'api_get_user_info',
 						data: {
 							token,
 						},
 					})
-					if(result.result.code === 200){
-						uni.setStorageSync('userInfo',result.result.user)
-					}else{
+					if (result.result.code === 200) {
+						uni.setStorageSync('userInfo', result.result.user)
+					} else {
 						uni.showToast({
-							title:result.result.message,
-							icon:"none"
+							title: result.result.message,
+							icon: "none"
 						})
 					}
 				} catch (error) {
 					//TODO handle the exception
 				}
 			},
-			
+
 			// 检查 token 
-			async tokenValidity(){
+			async tokenValidity() {
 				const token = uni.getStorageSync('token')
 				const vaild = await uniCloud.callFunction({
-					name:"check_token_Validity",
-					data:{
+					name: "check_token_Validity",
+					data: {
 						token
 					}
 				})
-				if(!vaild.result.valid){
+				if (!vaild.result.valid) {
 					uni.showModal({
 						title: '提示',
 						content: '过期 token 请重新登录！',
-						success: function (res) {
+						success: function(res) {
 							if (res.confirm) {
 								uni.removeStorageSync("token")
 								uni.removeStorageSync('userInfo')
 								uni.reLaunch({
-									url:"/pages/login/index"
+									url: "/pages/login/index"
 								})
 							} else if (res.cancel) {
 								console.log('用户点击取消');
@@ -95,12 +96,23 @@
 				})
 
 				updateManager.onUpdateReady(function() {
-					updateManager.applyUpdate()
+					wx.showModal({
+						title: '更新提示',
+						content: '新版本已准备好，是否重启应用？',
+						success(res) {
+							if (res.confirm) {
+								updateManager.applyUpdate();
+							}
+						}
+					});
 				})
 
-				updateManager.onUpdateFailed(function() {
-					// 新版本下载失败
-				})
+				updateManager.onUpdateFailed(() => {
+					wx.showToast({
+						title: '新版本下载失败',
+						icon: 'none'
+					});
+				});
 			},
 		},
 	}
