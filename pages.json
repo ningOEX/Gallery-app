@@ -58,6 +58,12 @@
 			"style": {
 				"navigationBarTitleText": "主题列表"
 			}
+		},
+		{
+			"path": "pages/myWorks/index",
+			"style": {
+				"navigationBarTitleText": "作品"
+			}
 		}
 	],
 	"globalStyle": {

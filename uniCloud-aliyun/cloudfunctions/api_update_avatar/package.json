@@ -1,0 +1,7 @@
+{
+  "name": "api_update_avatar",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

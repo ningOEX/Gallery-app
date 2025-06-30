@@ -3,7 +3,7 @@
 		<view class="user-card">
 			<view class="card-content">
 				<view class="user-avatar">
-					<image src="/static/default.png" mode="aspectFit" class="image"></image>
+					<image :src="user.avatar ? user.avatar[0]?.tempFileURL : '/static/default.png'" @click="uploadAavatar" mode="aspectFill" class="image"></image>
 					<view class="user-name">
 						<text class="name">{{ user.nickname }}</text>
 						<text class="uid">uid:{{ user._id }}</text>
@@ -60,8 +60,11 @@
 <script setup lang="ts">
 	import { ref } from 'vue'
 	import type { User } from '@/model/user'
+	import {DowlodURL} from "@/model/ImagesForm"
 	import { onShow, onLoad } from '@dcloudio/uni-app'
 	import { IAppOption } from '@/model/IAppOption'
+	import {getCurrentDateTime} from "@/utils/index"
+	
 	const app = getApp<IAppOption>()
 
 	let token : string;
@@ -69,7 +72,7 @@
 	const tabList = [
 		{
 			text: '作品',
-			path: '',
+			path: '/pages/myWorks/index',
 			link: '',
 		},
 		{
@@ -83,7 +86,7 @@
 			link: '',
 		},
 		{
-			text: '点赞',
+			text: '历史头像',
 			path: '',
 			link: '',
 		},
@@ -95,7 +98,10 @@
 		phone: '',
 		createdAt: '',
 		introduction: '',
+		avatar:[],
 	})
+	
+	const oldVvatar = ref<DowlodURL[]>([]) // 临时保存上一次头像
 
 	const introduction = ref<string>('')
 
@@ -156,6 +162,118 @@
 		}
 		console.log(introduction.value);
 	}
+	
+	// 头像上传
+	const uploadAavatar = ()=>{
+		uni.chooseImage({
+			count: 1,
+			sizeType: ['compressed'],
+			sourceType: ['album', 'camera'],
+			success: (res) => {
+				// 上传图片到服务器
+				pushCloudFunc(res.tempFilePaths[0])
+			}
+		})
+	}
+	
+	// 推送至云存储
+	const pushCloudFunc = async(avatar : string)=>{
+		uni.showLoading({
+			title:"更新中..."
+		})
+		try {
+			const result = await uniCloud.uploadFile({
+				filePath:avatar,
+				cloudPath: `uploadAvatar/${Date.now()}_${avatar.split('/').pop()}`, // 动态生成文件名
+				cloudPathAsRealPath: true, //云端文件绝对路径
+				fileType: 'image',
+			})
+			getTempFileURLFunc(result.fileID)
+		} catch (error) {
+			//TODO handle the exception
+			uni.showToast({
+				title:error.message,
+				icon:"none"
+			})
+			uni.hideLoading()
+		} 
+	}
+	
+	// 获取下载地址
+	const getTempFileURLFunc = async(fileID : string) => {
+		try {
+			const result = await uniCloud.getTempFileURL({fileList: [fileID]})
+			// 原始头像临时存储
+			if(user.value && user.value.avatar){
+				oldVvatar.value = user.value.avatar
+			}
+			user.value.avatar = result.fileList
+			saveAvatar() // 保存
+		} catch (error) {
+			//TODO handle the exception
+			uni.showToast({
+				title:error.message,
+				icon:"none"
+			})
+			uni.hideLoading()
+		}
+	}
+	
+	// 保存更新avatar
+	const saveAvatar = async()=>{
+		try{
+			const res = await uniCloud.callFunction({
+				name:"api_update_avatar",
+				data:{
+					_id: user.value._id,
+					avatar: user.value.avatar,
+				}
+			})
+			if(res.result.code === 200){
+				// 保存成功
+				uni.showToast({
+					title:'更新成功',
+					icon:"none"
+				})
+				saveHistoryAvatar()
+			}else{
+				// 保存失败
+				uni.showToast({
+					title:res.result.message,
+					icon:"none"
+				})
+				uni.hideLoading()
+			}
+		} catch (error) {
+			//TODO handle the exception
+			uni.showToast({
+				title:error.message,
+				icon:"none"
+			})
+			uni.hideLoading()
+		} 
+	}
+
+	// 存储历史头像
+	const saveHistoryAvatar = async()=>{
+		try {
+			uniCloud.callFunction({
+				name:"api_add_abandon_avatar",
+				data:{
+					_id:user.value._id,
+					avatar:oldVvatar.value,
+					timestamp:getCurrentDateTime().timestamp
+				}
+			})
+		} catch (error) {
+			//TODO handle the exception
+			uni.showToast({
+				title:error.message,
+				icon:"none"
+			})
+		}
+		
+	}
 
 	/**
 	 * 退出登录
@@ -185,6 +303,9 @@
 			})
 			return
 		}
+		uni.navigateTo({
+			url:`${item.path}?id=${user.value._id}`
+		})
 	}
 </script>
 
@@ -221,6 +342,7 @@
 						width: 100rpx;
 						height: 100rpx;
 						isolation: isolate;
+						border-radius: 50rpx;
 					}
 
 					.user-name {

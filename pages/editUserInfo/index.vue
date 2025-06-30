@@ -2,7 +2,7 @@
 	<view class="edit-container">
 		<view class="user-card" @click="edit(types.nickname)">
 			<view class="user-avatar">
-				<image src="/static/default.png" mode="aspectFit" class="image"></image>
+				<image :src="user.avatar ? user.avatar[0].tempFileURL : '/static/default.png'" mode="aspectFill" class="image"></image>
 				<view class="user-name">
 					<text class="name">{{ user?.nickname }}</text>
 					<text class="uid">uid:{{ user._id }}</text>
@@ -259,7 +259,7 @@
 		.user-card {
 			// border: 1px solid;
 			border-radius: 20rpx;
-			box-shadow: 0 0 4rpx #000;
+			box-shadow: 0 0 4rpx #9e95ff;
 			padding: 20rpx;
 			background: linear-gradient(45deg, #eff4fb, #eff4fb, #abceff);
 
@@ -272,6 +272,7 @@
 					width: 150rpx;
 					height: 150rpx;
 					margin: 0 auto;
+					border-radius: 50%;
 				}
 			}
 
