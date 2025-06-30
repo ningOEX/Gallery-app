@@ -1,7 +1,7 @@
 <template>
 	<view v-if="!isPublishedMoreThanSevenDaysAgo(image.timestamp,props.isConfine)" class="card">
 		<image @click="toImageDetails" :src="image.dowlodURL[0].tempFileURL" mode="widthFix" class="main-image" />
-		<view class="card-footer">
+		<view class="card-footer" @click="handleUserInfo(image)">
 			<image src="/static/default.png" class="avatar" />
 			<text class="username">{{ validatePhoneNumber(image.nickname) ? maskPhoneNumber(image.nickname) : maskName(image.nickname) }}</text>
 			<uni-icons type="fire" size="18" color="#999" />
@@ -13,10 +13,14 @@
 
 <script setup lang="ts">
 	// import {onShow,onLoad} from "@dcloudio/uni-app"
+	import {ref} from "vue"
 	import { ImagesForm } from "@/model/ImagesForm"
 	import {isPublishedMoreThanSevenDaysAgo,validatePhoneNumber,maskPhoneNumber,maskName} from "@/utils/index"
+	
 	const props = defineProps<{image : ImagesForm,isConfine : boolean}>()
-
+	
+	const emits = defineEmits(['clickAvatar'])
+	
 	let token:string
 
 	const toImageDetails = async() => {
@@ -43,6 +47,10 @@
 		} finally{
 			uni.hideLoading()
 		}
+	}
+	
+	const handleUserInfo = (image : ImagesForm)=>{
+		emits('clickAvatar',image.uid)
 	}
 	
 </script>

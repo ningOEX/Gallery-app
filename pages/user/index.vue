@@ -31,10 +31,12 @@
 				</view>
 				<uni-icons type="right" size="20"></uni-icons>
 			</view>
-			<view class="nav-item">
+			<view class="nav-item" >
 				<view class="nav-icon">
 					<image src="/static/login/icon_manual.png" mode="aspectFit" class="icon"></image>
-					<text>客服帮助</text>
+					<view class="about">
+						<view>wx：CEio-CC</view>
+					</view>
 				</view>
 				<uni-icons type="right" size="20"></uni-icons>
 			</view>
@@ -106,6 +108,7 @@
 	onShow(() => {
 		app.globalData.getUser()
 		user.value = app.globalData.user
+		introduction.value = user.value.introduction
 	})
 
 	const ToEdit = () => {
@@ -253,10 +256,18 @@
 					/* 垂直方向排列 */
 					-webkit-line-clamp: 3;
 					/* 限制行数为 3 行 */
-
+					
+					.text_content{
+						padding-left: 10rpx;
+						color: rgba(0, 0, 0, 0.6);
+					}
+					
 					.icon {
 						width: 32rpx;
 						height: 32rpx;
+						padding-left: 2rpx;
+						margin-top: 8rpx;
+						display: inline-block;
 					}
 				}
 			}
@@ -299,10 +310,12 @@
 					display: flex;
 					align-items: center;
 					gap: 20rpx;
-
+					
+					
 					.icon {
 						width: 40rpx;
 						height: 40rpx;
+						
 					}
 				}
 			}

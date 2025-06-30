@@ -45,7 +45,6 @@
 						},
 					})
 					if(result.result.code === 200){
-						console.log('update 200');
 						uni.setStorageSync('userInfo',result.result.user)
 					}else{
 						uni.showToast({

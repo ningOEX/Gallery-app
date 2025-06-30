@@ -1,0 +1,7 @@
+{
+  "name": "api_get_uid_user",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

@@ -4,7 +4,7 @@
       <view v-for="(item, index) in cardList" class="item" :key="index" @click="changeCard(item)">
         <text class="name">{{ item.text }}</text>
       </view>
-	  <view v-if="!cardList.length">加载中...</view>
+	  <view v-if="loading">{{loadingText}} <uni-icons v-if="!loading" type="refreshempty" size="30"></uni-icons></view>
     </view>
   </view>
 </template>
@@ -15,6 +15,10 @@ import {onShow,onLoad} from "@dcloudio/uni-app"
 import {TypeSort} from "@/model/TypeSort"
 
 const cardList = ref<TypeSort[]>([])
+
+const loading = ref<boolean>(true)
+
+const loadingText = ref<string>('加载中...')
 
 const getTypesFunc = async()=>{
 	try {
@@ -27,6 +31,9 @@ const getTypesFunc = async()=>{
 		}
 	} catch (error) {
 		//TODO handle the exception
+		loadingText.value = '加载失败'
+	} finally{
+		loading.value = false
 	}
 }
 

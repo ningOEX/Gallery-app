@@ -14,11 +14,12 @@ exports.main = async (event, context) => {
             .skip(skip)
             .limit(pageSize)
             .get();
+			
 		const countResult = await db.collection("images_list").count()
         return {
             code: 200,
             message: '获取成功',
-            data: result.data,
+            data: result.data.reverse(),
             total: countResult.total
         };
     } catch (error) {

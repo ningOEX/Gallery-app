@@ -65,9 +65,9 @@
         "cloudfunctionRoot" : "cloudfunctions/", // 配置云开发目录
         "setting" : {
             "urlCheck" : false,
-            "es6" : true,
-            "postcss" : true,
-            "minified" : true
+            "es6" : false,
+            "postcss" : false,
+            "minified" : false
         },
         "usingComponents" : true
     },
