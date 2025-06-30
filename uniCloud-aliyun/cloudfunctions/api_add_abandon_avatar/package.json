@@ -1,0 +1,7 @@
+{
+  "name": "api_add_abandon_avatar",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}
