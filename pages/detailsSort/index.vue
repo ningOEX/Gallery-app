@@ -1,46 +1,38 @@
 <template>
-	<scroll-view class="scroll-view" :scroll-y="true" @scrolltolower="scrolltolower">
-		<view class="container">
-			<ImageCard v-for="(item, index) in images" :key="index" :image="item" :is-confine="isConfine" @click-avatar="handleAvatar"  />
-		</view>
-		<view v-if="loading" class="loading">加载更多...</view>
-		<view v-if="end" class="loading">没有更多~</view>
-		<my-empty v-if="!images.length" title="空空如也~"></my-empty>
-		
-		<user-card-popup v-model="show" :user="currentUser" @leave="handleLeave"></user-card-popup>
-	</scroll-view>
+	<z-paging ref="paging" auto-show-system-loading :refresher-enabled="false" v-model="dataList" use-virtual-list use-compatibility-mode cell-height-mode="dynamic" @query="queryList">
+		<!-- z-paging默认铺满全屏，此时页面所有view都应放在z-paging标签内，否则会被盖住 -->
+		<!-- 需要固定在页面顶部的view请通过slot="top"插入，包括自定义的导航栏 -->
+		<template #empty>
+			<my-empty title="暂无数据~"></my-empty>
+		</template>
+		 <my-waterfall :list="dataList" @item-click="handleItemClick"></my-waterfall>
+	</z-paging>
 </template>
 
 <script lang="ts" setup>
 	import { ref } from 'vue'
 	import { onLoad } from "@dcloudio/uni-app"
-	import ImageCard from '@/components/home/image-card.vue'
 	import { ImagesForm } from "@/model/ImagesForm"
-
+	import myWaterfall from '@/components/home/my-waterfall.vue'
 	import myEmpty from '@/components/my-empty.vue'
 	import userCardPopup from '@/components/userCardPopup.vue'
 	import {User} from "@/model/user"
-	const images = ref<ImagesForm[]>([])
-
-	const page = ref<number>(1)
-	const pageSize = ref<number>(10)
-	const loading = ref<boolean>(false)
-	const total = ref<number>(-1)
-	const end = ref<boolean>(false) // 没有更多了
-
-	const isConfine = ref(false) // 是否限制近七天显示
+	
+	let token:string;
 	
 	const show = ref<boolean>() // 查看用户简单信息
-	
 	
 	const currentUser = ref<User>()
 	
 	const type = ref<string>('') // 
+	
+	const paging = ref(null)
+	const dataList = ref<ImagesForm[]>([])
 
 	onLoad((target : any) => {
 		if (!target.type) return
 		type.value = target.type
-		fetchData(type.value)
+		token = uni.getStorageSync("token")
 	})
 	
 	// 头像详情回调
@@ -48,6 +40,10 @@
 		show.value = false
 	}
 	
+	const handleItemClick = (item : ImagesForm) => {
+		uni.navigateTo({ url: `/pages/imageDetails/index?id=${item._id}&views=${item.views}` })
+	}
+
 	const handleAvatar = async(uid : string)=>{
 		uni.showLoading({
 			title:"加载中..."
@@ -69,42 +65,26 @@
 			uni.hideLoading()
 		}
 	}
-
-	// 获取list
-	const fetchData = async (type : string) => {
-		uni.showLoading({
-			title: "加载ing..."
-		})
+	
+	// 数据请求
+	const queryList = async (pageNo : number, pageSize : number) => {
 		try {
-			const res = await uniCloud.callFunction({
+			const result = await uniCloud.callFunction({
 				name: "api_get_sort_list",
 				data: {
-					type,
-					page: page.value,
-					pageSize: pageSize.value
+					type:type.value,
+					page: pageNo,
+					pageSize: pageSize
 				}
 			})
-			total.value = res.result.total
-			images.value = res.result.data
-		} catch (error) {
+			paging.value.complete(result.result.data);
+		} catch (err) {
 			uni.showToast({
-				title: error.message,
+				title: err.message,
 				icon: "none"
 			})
-		} finally {
-			uni.hideLoading()
-		}
-	}
-
-	// 滚动到底部
-	const scrolltolower = async () => {
-		if (total.value === images.value.length) {
-			end.value = true
-			return
-		}
-		loading.value = true
-		page.value++
-		fetchData(type.value)
+			paging.value.complete(false);
+		} 
 	}
 </script>
 

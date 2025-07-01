@@ -7,7 +7,7 @@
 			<view class="top-info">
 				<image v-if="details?.typeName" class="avatar" src="/static/default.png" />
 				<view class="username" v-if="details!">
-					{{validatePhoneNumber(details?.nickname) ? maskPhoneNumber(details?.nickname) : maskName(details?.nickname) }}
+					{{validatePhoneNumber(details?.nickname) ? maskPhoneNumber(details?.nickname) : details?.nickname }}
 				</view>
 			</view>
 			<view class="info-box">
@@ -35,25 +35,44 @@
 
 	import { ImagesForm, DowlodURL } from "@/model/ImagesForm";
 	import { IAppOption } from "@/model/IAppOption";
-	import { validatePhoneNumber, maskPhoneNumber, maskName } from "@/utils/index"
+	import { validatePhoneNumber, maskPhoneNumber } from "@/utils/index"
 	const app = getApp<IAppOption>()
 
 	let token : string;
 
 	const details = ref<ImagesForm>()
-
+	
+	
 	onLoad((target : any) => {
-		app.globalData.tokenValidity() // 检查token是否过期
-		token = uni.getStorageSync("token")
 		uni.showLoading({
 			title: "加载中..."
 		})
+		console.log(target);
+		app.globalData.tokenValidity() // 检查token是否过期
+		token = uni.getStorageSync("token")
+		updateIncreaseViews(target.id,Number(target.views))
 		fetchDataDetails(target.id)
-
 	})
 
 	const goBack = () => {
 		uni.navigateBack()
+	}
+	
+	// 更新查看++
+	const updateIncreaseViews = async (id : string, count : number) => {
+		let views = count + 1
+		try {
+			await uniCloud.callFunction({
+				name: "api_increase_views",
+				data: {
+					_id: id,
+					token,
+					views,
+				}
+			})
+		} catch (error) {
+			//TODO handle the exception
+		}
 	}
 
 	const fetchDataDetails = async (id : string) => {

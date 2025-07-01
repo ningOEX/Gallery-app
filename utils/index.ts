@@ -99,3 +99,30 @@ export const getStatusBarHeight = () => {
   // console.log(menuButtonInfo);
   return `padding-top:${menuButtonInfo.top}px;`
 }
+
+export const parseDate = (dateString: string): Date => {
+  // 尝试多种格式
+  const formats = [
+    dateString.replace(/-/g, '/'), // yyyy/MM/dd HH:mm:ss
+    dateString.replace(' ', 'T') + 'Z', // ISO格式
+    dateString.split(' ')[0].replace(/-/g, '/') // 仅日期部分
+  ];
+  
+  for (const format of formats) {
+    const date = new Date(format);
+    if (!isNaN(date.getTime())) {
+      return date;
+    }
+  }
+  
+  // 如果都不行，手动解析
+  const parts = dateString.split(/[- :]/);
+  return new Date(
+    parseInt(parts[0]),
+    parseInt(parts[1]) - 1,
+    parseInt(parts[2]),
+    parts[3] ? parseInt(parts[3]) : 0,
+    parts[4] ? parseInt(parts[4]) : 0,
+    parts[5] ? parseInt(parts[5]) : 0
+  );
+}

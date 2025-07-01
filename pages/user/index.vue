@@ -35,7 +35,7 @@
 				<view class="nav-icon">
 					<image src="/static/login/icon_manual.png" mode="aspectFit" class="icon"></image>
 					<view class="about">
-						<view>wx：CEio-CC</view>
+						<view>联系我们</view>
 					</view>
 				</view>
 				<uni-icons type="right" size="20"></uni-icons>

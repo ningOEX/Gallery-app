@@ -26,46 +26,25 @@ import { reactive } from 'vue'
 interface MenuItem {
   menuTitle: string
   menuIcon: string
+  path:string
 }
 
 const menuList = reactive<MenuItem[]>([
-  { menuTitle: '最新周更', menuIcon: '../../static/iconNavMenu/icon_menu_1.png' },
-  { menuTitle: '精选壁纸', menuIcon: '../../static/iconNavMenu/icon_menu_2.png' },
-  { menuTitle: '作品最佳', menuIcon: '../../static/iconNavMenu/icon_menu_3.png' },
-  { menuTitle: '编辑发布', menuIcon: '../../static/iconNavMenu/icon_menu_4.png' },
-  { menuTitle: '我要发布', menuIcon: '../../static/iconNavMenu/icon_menu_5.png' },
+  { menuTitle: '创作神韵', menuIcon: '../../static/iconNavMenu/icon_menu_1.png',path:'/pages/hotWeekUpdate/index' },
+  { menuTitle: '虚位以待', menuIcon: '../../static/iconNavMenu/icon_menu_2.png' ,path:''},
+  { menuTitle: '虚位以待', menuIcon: '../../static/iconNavMenu/icon_menu_3.png' ,path:''},
+  { menuTitle: '虚位以待', menuIcon: '../../static/iconNavMenu/icon_menu_4.png',path:'' },
+  { menuTitle: '我要发布', menuIcon: '../../static/iconNavMenu/icon_menu_5.png',path:'/pages/upload/index' },
 ])
 const clickMenuItem = (item: MenuItem) => {
-  // console.log('点击了菜单栏：', item)
-  switch (item.menuTitle) {
-    case '最新周更':
-      uni.navigateTo({ url: '/pages/hotWeekUpdate/index' })
-      break
-    case '精选壁纸':
-      // uni.navigateTo({ url: '/pages/wallpaper/index' })
-      uni.showToast({
-        title: '敬请期待',
-        icon: 'none',
-      })
-      break
-    case '作品最佳':
-      // uni.navigateTo({ url: '/pages/best/index' })
-      uni.showToast({
-        title: '敬请期待',
-        icon: 'none',
-      })
-      break
-    case '编辑发布':
-      // uni.navigateTo({ url: '/pages/edit/index' })
-      uni.showToast({
-        title: '敬请期待',
-        icon: 'none',
-      })
-      break
-    case '我要发布':
-      uni.navigateTo({ url: '/pages/upload/index' })
-      break
-  }
+	if(!item.path){
+		uni.showToast({
+		  title: '敬请期待',
+		  icon: 'none',
+		})
+		return
+	}
+	uni.navigateTo({ url: item.path })
 }
 </script>
 

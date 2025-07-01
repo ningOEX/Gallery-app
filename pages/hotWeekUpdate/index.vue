@@ -1,110 +1,95 @@
 <template>
-	<scroll-view class="scroll-view" :scroll-y="true" @scrolltolower="scrolltolowerHandle">
-		<view class="container">
-			<ImageCard v-for="(item, index) in images" :key="index" :image="item" :is-confine="isConfine" @click-avatar="handleAvatar" />
-		</view>
-		<view v-if="loading" class="loading">加载更多...</view>
-		<view v-if="end" class="loading">没有更多~</view>
-		<my-empty v-if="!images.length" title="暂无数据~"></my-empty>
-		
-		<user-card-popup v-model="show" :user="currentUser" @leave="handleLeave"></user-card-popup>
-	</scroll-view>
+	<z-paging ref="paging" auto-show-system-loading :refresher-enabled="false" v-model="dataList" use-virtual-list use-compatibility-mode cell-height-mode="dynamic" @query="queryList">
+		<!-- z-paging默认铺满全屏，此时页面所有view都应放在z-paging标签内，否则会被盖住 -->
+		<!-- 需要固定在页面顶部的view请通过slot="top"插入，包括自定义的导航栏 -->
+		<template #empty>
+			<my-empty title="暂无数据~"></my-empty>
+		</template>
+		 <my-waterfall :list="dataList" @item-click="handleItemClick"></my-waterfall>
+	</z-paging>
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue'
+	import { ref,nextTick } from 'vue'
 	import { onLoad } from "@dcloudio/uni-app"
-	import ImageCard from '@/components/home/image-card.vue'
-	import { ImagesForm } from "@/model/ImagesForm"
+	import myWaterfall from '@/components/home/my-waterfall.vue'
 
 	import myEmpty from '@/components/my-empty.vue'
-	
+	import { ImagesForm } from "@/model/ImagesForm"
+
+
 	import userCardPopup from '@/components/userCardPopup.vue'
-	import {User} from "@/model/user"
+	import { User } from "@/model/user"
 
-	const images = ref<ImagesForm[]>([])
+	let token : string
 
-	const page = ref<number>(1)
-	const pageSize = ref<number>(10)
-	const loading = ref<boolean>(false)
-	const total = ref<number>(-1)
-	const end = ref<boolean>(false) // 没有更多了
-
-	const isConfine = true; //是否限制近七天展示
 	const show = ref<boolean>() // 查看用户简单信息
 	
-	
+	const isUpdating = ref<boolean>(false) // 防止多次点击
+
 	const currentUser = ref<User>()
+
+	const paging = ref(null)
+	const dataList = ref<ImagesForm[]>([])
+	
 	
 	// 头像详情回调
-	const handleLeave = ()=>{
+	const handleLeave = () => {
 		show.value = false
 	}
 	
+	// 图片预览详情
+	const handleItemClick = (item : ImagesForm) => {
+		uni.navigateTo({ url: `/pages/imageDetails/index?id=${item._id}&views=${item.views}` })
+	}
+
 	// 头像点击
-	const handleAvatar = async(uid : string)=>{
+	const handleAvatar = async (uid : string) => {
 		uni.showLoading({
-			title:"加载中..."
+			title: "加载中..."
 		})
-		try{
+		try {
 			const res = await uniCloud.callFunction({
-				name:"api_get_uid_user",
-				data:{
-					_id :uid
+				name: "api_get_uid_user",
+				data: {
+					_id: uid
 				}
 			})
-			if(res.result.code === 200){
+			if (res.result.code === 200) {
 				currentUser.value = res.result.data[0]
 				show.value = true
 			}
-		} catch (error){
+		} catch (error) {
 			// error
-		}finally{
+		} finally {
 			uni.hideLoading()
 		}
 	}
-	
+
 	// 数据请求
-	const fetchDataFunc = async () => {
-		uni.showLoading({
-			title: "加载中..",
-		})
+	const queryList = async (pageNo : number, pageSize : number) => {
+		await nextTick()
 		try {
 			const result = await uniCloud.callFunction({
 				name: "api_get_hot_week_list",
 				data: {
-					page: page.value,
-					pageSize: pageSize.value
+					page: pageNo,
+					pageSize: pageSize
 				}
 			})
-			total.value = result.result.total // 总数
-			images.value = [...images.value, ...result.result.data]
+			paging.value.complete(result.result.data);
 		} catch (err) {
 			uni.showToast({
 				title: err.message,
 				icon: "none"
 			})
-		} finally {
-			uni.hideLoading()
-			loading.value = false
-		}
+			paging.value.complete(false);
+		} 
 	}
 
 	onLoad(() => {
-		fetchDataFunc()
+		token = uni.getStorageSync('token')
 	})
-
-
-	// 底部
-	const scrolltolowerHandle = () => {
-		if (total.value === images.value.length) {
-			end.value = true
-			return
-		}
-		loading.value = true
-		page.value++
-		fetchDataFunc()
-	}
 </script>
 
 <style lang="scss" scoped>
@@ -115,10 +100,9 @@
 		/* 确保可以垂直滚动 */
 
 		.container {
-			column-count: 2;
-			column-gap: 10px;
-			padding: 10px;
-			animation: 1s;
+			// padding-bottom: constant(safe-area-inset-bottom);
+			// padding-bottom: env(safe-area-inset-bottom);
+			background-color: #f7f7f7;
 		}
 
 		.loading {
