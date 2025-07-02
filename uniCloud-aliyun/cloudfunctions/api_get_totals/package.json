@@ -1,0 +1,7 @@
+{
+  "name": "api_get_totals",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

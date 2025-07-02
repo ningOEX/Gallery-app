@@ -3,7 +3,8 @@
 		<view class="user-card">
 			<view class="card-content">
 				<view class="user-avatar">
-					<image :src="user.avatar ? user.avatar[0]?.tempFileURL : '/static/default.png'" @click="uploadAavatar" mode="aspectFill" class="image"></image>
+					<image :src="user.avatar ? user.avatar[0]?.tempFileURL : '/static/default.png'"
+						@click="uploadAavatar" mode="aspectFill" class="image"></image>
 					<view class="user-name">
 						<text class="name">{{ user.nickname }}</text>
 						<text class="uid">uid:{{ user._id }}</text>
@@ -16,7 +17,7 @@
 				</view>
 				<view class="tab-content">
 					<view class="tab-item" v-for="(item, index) in tabList" :key="index" @click="toGo(item)">
-						<text class="tab-total">0</text>
+						<text class="tab-total">{{item.total ? item.total : 0}}</text>
 						<text class="tab-name">{{ item.text }}</text>
 					</view>
 				</view>
@@ -31,7 +32,7 @@
 				</view>
 				<uni-icons type="right" size="20"></uni-icons>
 			</view>
-			<view class="nav-item" >
+			<view class="nav-item">
 				<view class="nav-icon">
 					<image src="/static/login/icon_manual.png" mode="aspectFit" class="icon"></image>
 					<view class="about">
@@ -54,43 +55,67 @@
 			<uni-popup-dialog ref="inputClose" mode="input" title="个人签墙" v-model="introduction" placeholder="说点什么吧~"
 				@confirm="dialogInputConfirm" @close="introduction = ''"></uni-popup-dialog>
 		</uni-popup>
+		
+		<my-page-container v-model="isOpenAvatarPopup" :list="avatarList" @leave="leaveHandle"></my-page-container>
+
+
 	</view>
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue'
-	import type { User } from '@/model/user'
-	import {DowlodURL} from "@/model/ImagesForm"
+	import { ref, watchEffect, watch } from 'vue'
 	import { onShow, onLoad } from '@dcloudio/uni-app'
+	// model
+	import { DowlodURL } from "@/model/ImagesForm"
+	import type { User } from '@/model/user'
 	import { IAppOption } from '@/model/IAppOption'
-	import {getCurrentDateTime} from "@/utils/index"
+	// utils
+	import { getCurrentDateTime } from "@/utils/index"
+	// components
+	import myPageContainer from '@/components/my-page-container.vue'
+	
+	import { OldAvatarInfo } from '@/model/OldAvatarInfo'
+	
+	
+	interface TabList {
+		text: string
+		path: string
+		link: string
+		total: string
+		noPath?: boolean
+	}
 	
 	const app = getApp<IAppOption>()
 
 	let token : string;
 
-	const tabList = [
+	const tabList = ref<TabList[]>([
 		{
 			text: '作品',
 			path: '/pages/myWorks/index',
 			link: '',
+			total: ""
 		},
 		{
 			text: '收藏',
 			path: '',
 			link: '',
+			total: ""
 		},
 		{
 			text: '足迹',
 			path: '',
 			link: '',
+			total: ""
 		},
 		{
-			text: '历史头像',
+			text: '陈旧画像',
 			path: '',
 			link: '',
+			noPath:true,
+			total: ""
 		},
-	]
+	])
 
 	const user = ref<User>({
 		_id: '',
@@ -98,14 +123,25 @@
 		phone: '',
 		createdAt: '',
 		introduction: '',
-		avatar:[],
+		avatar: [],
 	})
-	
-	const oldVvatar = ref<DowlodURL[]>([]) // 临时保存上一次头像
+
+	const totles = ref({})
+	const isOpenAvatarPopup = ref<boolean>(false)
+
+	const oldAvatar = ref<DowlodURL[]>([]) // 临时保存上一次头像
 
 	const introduction = ref<string>('')
 
 	const refDialog = ref() // Ref弹框
+	
+	const avatarList = ref<OldAvatarInfo[]>()
+	
+	watch(() => user.value, () => {
+		console.log('[watch]');
+		fetchTotalFunc()
+	})
+
 
 	onLoad(() => {
 		token = uni.getStorageSync("token")
@@ -122,6 +158,28 @@
 			url: '/pages/editUserInfo/index',
 		})
 	}
+
+	// 获取总数
+	const fetchTotalFunc = async () => {
+		try {
+			const res = await uniCloud.callFunction({
+				name: "api_get_totals",
+				data: {
+					uid: user.value._id
+				}
+			})
+
+			if (res.result.code === 200) {
+				tabList.value[0].total = res.result.data.worksTotal
+				tabList.value[3].total = res.result.data.oldAvatar.length
+				avatarList.value = res.result.data.oldAvatar
+			}
+
+		} catch (error) {
+			//TODO handle the exception
+		}
+	}
+
 
 	// 编辑个人简介
 	const changeIntroduction = () => {
@@ -162,9 +220,9 @@
 		}
 		console.log(introduction.value);
 	}
-	
+
 	// 头像上传
-	const uploadAavatar = ()=>{
+	const uploadAavatar = () => {
 		uni.chooseImage({
 			count: 1,
 			sizeType: ['compressed'],
@@ -175,15 +233,15 @@
 			}
 		})
 	}
-	
+
 	// 推送至云存储
-	const pushCloudFunc = async(avatar : string)=>{
+	const pushCloudFunc = async (avatar : string) => {
 		uni.showLoading({
-			title:"更新中..."
+			title: "更新中..."
 		})
 		try {
 			const result = await uniCloud.uploadFile({
-				filePath:avatar,
+				filePath: avatar,
 				cloudPath: `uploadAvatar/${Date.now()}_${avatar.split('/').pop()}`, // 动态生成文件名
 				cloudPathAsRealPath: true, //云端文件绝对路径
 				fileType: 'image',
@@ -192,90 +250,90 @@
 		} catch (error) {
 			//TODO handle the exception
 			uni.showToast({
-				title:error.message,
-				icon:"none"
+				title: error.message,
+				icon: "none"
 			})
 			uni.hideLoading()
-		} 
+		}
 	}
-	
+
 	// 获取下载地址
-	const getTempFileURLFunc = async(fileID : string) => {
+	const getTempFileURLFunc = async (fileID : string) => {
 		try {
-			const result = await uniCloud.getTempFileURL({fileList: [fileID]})
+			const result = await uniCloud.getTempFileURL({ fileList: [fileID] })
 			// 原始头像临时存储
-			if(user.value && user.value.avatar){
-				oldVvatar.value = user.value.avatar
+			if (user.value && user.value.avatar) {
+				oldAvatar.value = user.value.avatar
 			}
 			user.value.avatar = result.fileList
 			saveAvatar() // 保存
 		} catch (error) {
 			//TODO handle the exception
 			uni.showToast({
-				title:error.message,
-				icon:"none"
+				title: error.message,
+				icon: "none"
 			})
 			uni.hideLoading()
 		}
 	}
-	
+
 	// 保存更新avatar
-	const saveAvatar = async()=>{
-		try{
+	const saveAvatar = async () => {
+		try {
 			const res = await uniCloud.callFunction({
-				name:"api_update_avatar",
-				data:{
+				name: "api_update_avatar",
+				data: {
 					_id: user.value._id,
 					avatar: user.value.avatar,
 				}
 			})
-			if(res.result.code === 200){
+			if (res.result.code === 200) {
 				// 保存成功
 				uni.showToast({
-					title:'更新成功',
-					icon:"none"
+					title: '更新成功',
+					icon: "none"
 				})
 				app.globalData.updateUserInfo()
 				app.globalData.getUser()
 				user.value = app.globalData.user
 				saveHistoryAvatar()
-			}else{
+			} else {
 				// 保存失败
 				uni.showToast({
-					title:res.result.message,
-					icon:"none"
+					title: res.result.message,
+					icon: "none"
 				})
 				uni.hideLoading()
 			}
 		} catch (error) {
 			//TODO handle the exception
 			uni.showToast({
-				title:error.message,
-				icon:"none"
+				title: error.message,
+				icon: "none"
 			})
 			uni.hideLoading()
-		} 
+		}
 	}
 
 	// 存储历史头像
-	const saveHistoryAvatar = async()=>{
+	const saveHistoryAvatar = async () => {
 		try {
 			uniCloud.callFunction({
-				name:"api_add_abandon_avatar",
-				data:{
-					_id:user.value._id,
-					avatar:oldVvatar.value,
-					timestamp:getCurrentDateTime().timestamp
+				name: "api_add_abandon_avatar",
+				data: {
+					_id: user.value._id,
+					avatar: oldAvatar.value,
+					timestamp: getCurrentDateTime().timestamp
 				}
 			})
 		} catch (error) {
 			//TODO handle the exception
 			uni.showToast({
-				title:error.message,
-				icon:"none"
+				title: error.message,
+				icon: "none"
 			})
 		}
-		
+
 	}
 
 	/**
@@ -295,10 +353,18 @@
 				}
 			},
 		})
+	}	
+	
+	const leaveHandle = ()=>{
+		isOpenAvatarPopup.value = false
 	}
 
 	// 
-	const toGo = (item : { text : string, path : string, link : string }) => {
+	const toGo = (item : TabList) => {
+		if(item.noPath){
+			isOpenAvatarPopup.value = true
+			return
+		}
 		if (!item.path) {
 			uni.showToast({
 				title: "敬请期待",
@@ -307,7 +373,7 @@
 			return
 		}
 		uni.navigateTo({
-			url:`${item.path}?id=${user.value._id}`
+			url: `${item.path}?id=${user.value._id}`
 		})
 	}
 </script>
@@ -381,12 +447,12 @@
 					/* 垂直方向排列 */
 					-webkit-line-clamp: 3;
 					/* 限制行数为 3 行 */
-					
-					.text_content{
+
+					.text_content {
 						padding-left: 10rpx;
 						color: rgba(0, 0, 0, 0.6);
 					}
-					
+
 					.icon {
 						width: 32rpx;
 						height: 32rpx;
@@ -411,6 +477,7 @@
 
 				.tab-total {
 					font-size: 26rpx;
+					color: #5555ff;
 				}
 
 				.tab-name {
@@ -435,12 +502,12 @@
 					display: flex;
 					align-items: center;
 					gap: 20rpx;
-					
-					
+
+
 					.icon {
 						width: 40rpx;
 						height: 40rpx;
-						
+
 					}
 				}
 			}

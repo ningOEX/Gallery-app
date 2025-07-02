@@ -13,6 +13,7 @@ exports.main = async (event, context) => {
         const result = await db.collection('images_list')
             .skip(skip)
             .limit(pageSize)
+			.orderBy("views",'asc')
             .get();
 			
 		const countResult = await db.collection("images_list").count()

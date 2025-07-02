@@ -89,10 +89,10 @@
 
 			update() {
 				const updateManager = wx.getUpdateManager()
-				console.log('[updateManager]: ', updateManager)
+				// console.log('[updateManager]: ', updateManager)
 				updateManager.onCheckForUpdate(function(res) {
 					// 请求完新版本信息的回调
-					console.log('是否有新版本：', res.hasUpdate)
+					// console.log('是否有新版本：', res.hasUpdate)
 				})
 
 				updateManager.onUpdateReady(function() {
